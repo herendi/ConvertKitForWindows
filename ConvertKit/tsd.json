@@ -1,0 +1,27 @@
+{
+  "version": "v4",
+  "repo": "borisyankov/DefinitelyTyped",
+  "ref": "master",
+  "path": "typings",
+  "bundle": "typings/tsd.d.ts",
+  "installed": {
+    "winjs/winjs.d.ts": {
+      "commit": "09e37435ffb2c56a6f908081194a74756f24f99d"
+    },
+    "knockout/knockout.d.ts": {
+      "commit": "09e37435ffb2c56a6f908081194a74756f24f99d"
+    },
+    "lodash/lodash.d.ts": {
+      "commit": "09e37435ffb2c56a6f908081194a74756f24f99d"
+    },
+    "winrt/winrt.d.ts": {
+      "commit": "09e37435ffb2c56a6f908081194a74756f24f99d"
+    },
+    "moment/moment.d.ts": {
+      "commit": "05557455c49043ff0189182e27c9e04403a70802"
+    },
+    "moment/moment-node.d.ts": {
+      "commit": "05557455c49043ff0189182e27c9e04403a70802"
+    }
+  }
+}

@@ -1,0 +1,43 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Login Page</title>
+
+    <link href="login.css" rel="stylesheet" />
+</head>
+<body>
+    <section role="main" class="login page-section ms-grid">
+        <div class="ms-row hc">
+            <div class="s-col-18-24 m-col-18-24 l-col-12-24 xl-col-8-24">
+                <form class="login-form ">
+                    <div>
+                        <div>
+                            <h3 class="win-h3 text-center">Enter your API credentials.</h3>
+                            <div class="form-group">
+                                <label class="control-label">ConvertKit Secret Key</label>
+                                <input class="win-textbox" type="password" data-bind="textinput: SecretKey, attr: { disabled: IsLoading }" />
+                            </div>
+                            <button class="win-button win-button-primary"
+                                    type="button"
+                                    data-bind="click: HandleLoginEvent, text: IsLoading() ? 'Validating Secret Key' : 'Validate Secret Key', attr: { disabled: IsLoading }">
+                                Validate Secret Key
+                            </button>
+                            <progress class="loading" style="display:none;" data-bind="visible: IsLoading() === true"></progress>
+                        </div>
+                    </div>
+                </form>
+                <hr />
+                <p class="text-center">
+                    ConvertKit does not support an OAuth integration, which means you'll need to manually enter your secret key to use this app.
+                    You can find it at <a href="https://app.convertkit.com/account/edit">https://app.convertkit.com/account/edit</a>.
+                    Your secret key will <strong>never</strong> leave this app.
+                </p>
+                <p class="text-center">
+                    You can validate that statement by reading the open-source code for this app at
+                    <a href="https://github.com/nozzlegear/ConvertKitForWindows">https://github.com/nozzlegear/ConvertKitForWindows</a>.
+                </p>
+            </div>
+        </div>
+    </section>
+</body>
+</html>

@@ -1,0 +1,30 @@
+﻿#contenthost {
+  background-color: #eee;
+}
+section.home {
+  background-color: #eee;
+}
+section.home h4 {
+  padding-bottom: 1.3rem;
+  margin-bottom: 1.5rem;
+  border-bottom: 1px solid #ccc;
+}
+section.home .subscribers {
+  overflow: hidden;
+  overflow-y: auto;
+}
+section.home .subscribers .subscriber p.win-type-body {
+  margin: .5rem 0;
+}
+section.home .subscribers .subscriber p.state {
+  text-transform: capitalize;
+}
+section.home .subscribers .subscriber hr {
+  border: none;
+  border-bottom: 1px solid #ccc;
+  margin: 1rem 0;
+  width: 100%;
+}
+section.home .subscribers .subscriber:last-child hr {
+  display: none;
+}

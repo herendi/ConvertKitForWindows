@@ -1,0 +1,37 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>ConvertKit for Windows</title>
+
+    <!-- WinJS references -->
+    <link href="ms-appx:///src/libraries/winjs/css/ui-light.min.css" rel="stylesheet" />
+    <script src="ms-appx:///src/libraries/winjs/js/base.min.js"></script>
+    <script src="ms-appx:///src/libraries/winjs/js/ui.min.js"></script>
+    <script src="ms-appx:///src/libraries/custom/navigator.js"></script>
+    <script src="ms-appx:///src/libraries/knockout/knockout.js"></script>
+    <script src="ms-appx:///src/libraries/knockout-winjs/knockout-winjs.js"></script>
+    <script src="ms-appx:///src/libraries/lodash/lodash.min.js"></script>
+    <script src="ms-appx:///src/libraries/reqwest/reqwest.min.js"></script>
+    <script src="ms-appx:///src/libraries/blueimp-md5/md5.min.js"></script>
+    <script src="ms-appx:///src/libraries/moment/moment.min.js"></script>
+    <script src="ms-appx:///src/libraries/custom/convertkit/convertkit.js"></script>
+    <script src="ms-appx:///src/libraries/custom/Utilities/Utilities.js"></script>
+
+    <!-- Individual page controllers. Inserted here so they can all call XController.DefinePages -->
+    <!-- In a bigger/heavier application, you could require these pages from default.ts -->
+    <script src="ms-appx:///src/pages/home/HomeController.js"></script>
+    <script src="ms-appx:///src/pages/login/LoginController.js"></script>
+
+    <!-- Default resources -->
+    <link href="ms-appx:///src/pages/default.css" rel="stylesheet" />
+    <link href="ms-appx:///src/libraries/winjs-grid/mscom-grid.min.css" rel="stylesheet" />
+    <script src="ms-appx:///src/pages/default.js"></script>
+</head>
+<body class="win-type-body">
+    <header id="appHeader">
+        <img class="img-responsive" src="ms-appx:///src/images/logo.png" />
+    </header>
+    <div id="contenthost" data-win-control="Application.PageControlNavigator" data-win-options="{home: 'ms-appx:///src/pages/home/home.html'}"></div>
+</body>
+</html>

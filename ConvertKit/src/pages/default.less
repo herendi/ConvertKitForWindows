@@ -1,0 +1,143 @@
+﻿@import "variables";
+
+body {
+    background-color: #eee;
+}
+
+header#appHeader {
+    background-color: @themeColor;
+    text-align: center;
+    padding: 1.5rem 0;
+    color: #fff;
+}
+
+#contenthost {
+    height:100%;
+    position: relative;
+}
+
+section {
+    height: 100%;
+}
+
+section.ms-grid{
+    width:100%;
+    padding-left:5%;
+    padding-right:5%;
+    max-width:100%;
+}
+
+section.with-appbar{
+    height: calc(~'100% -' 135px);
+}
+
+section.with-title{
+    height: calc(~'100% -' 73px);
+}
+
+section.with-title.with-appbar{
+    height: calc(~'100% - ' 208px)
+}
+
+.ms-row {
+    margin-bottom: 1em;
+}
+
+.text-right {
+    text-align: right;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.text-left {
+    text-align: left;
+}
+
+.pull-right {
+    float: right;
+}
+
+.pull-left {
+    float: left;
+}
+
+.clearfix {
+    clear: both;
+}
+
+.fw {
+    width: 100%;
+}
+
+img.img-responsive {
+    max-width: 100%;
+}
+
+img.img-circle {
+    border-radius: 50%;
+}
+
+img.img-bordered {
+    border: solid 3px @themeColor;
+}
+
+.centered {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.page-section {
+    padding-top: 1.5rem;
+}
+
+progress.loading {
+    max-width: 60%;
+    margin: 0 auto;
+    color: @themeColor;
+    display: block;
+}
+
+/*#region WinJS AppBar*/
+
+.win-commandingsurface .win-commandingsurface-actionarea {
+    background-color: @themeColor;
+}
+
+.win-commandimage, button:enabled:active .win-commandimage, button:enabled:hover:active .win-commandimage {
+    color: #fff;
+}
+
+.win-commandingsurface button.win-commandingsurface-overflowbutton:enabled .win-commandingsurface-ellipsis {
+    color: #fff;
+}
+
+button .win-label,
+button[aria-checked=true]:enabled .win-commandimage,
+button[aria-checked=true]:enabled .win-label,
+button[aria-checked=true]:enabled:hover:active .win-commandimage.win-commandimage {
+    color: #fff;
+}
+
+html.win-hoverable .win-commandingsurface button.win-commandingsurface-overflowbutton:hover .win-commandingsurface-ellipsis,
+html.win-hoverable .win-navbar.win-navbar-closed button:enabled.win-navbar-invokebutton:hover .win-navbar-ellipsis,
+html.win-hoverable .win-navbar.win-navbar-closing button:enabled.win-navbar-invokebutton:hover .win-navbar-ellipsis,
+html.win-hoverable .win-navbar.win-navbar-opened button:enabled.win-navbar-invokebutton:hover .win-navbar-ellipsis,
+html.win-hoverable .win-navbar.win-navbar-opening button:enabled.win-navbar-invokebutton:hover .win-navbar-ellipsis,
+html.win-hoverable button:enabled.win-command:hover,
+html.win-hoverable button:enabled.win-command:hover .win-commandglyph,
+html.win-hoverable.win-commandingsurface button.win-commandingsurface-overflowbutton:hover .win-commandingsurface-ellipsis,
+html.win-hoverable.win-navbar.win-navbar-closed button:enabled.win-navbar-invokebutton:hover .win-navbar-ellipsis,
+html.win-hoverable.win-navbar.win-navbar-closing button:enabled.win-navbar-invokebutton:hover .win-navbar-ellipsis,
+html.win-hoverable.win-navbar.win-navbar-opened button:enabled.win-navbar-invokebutton:hover .win-navbar-ellipsis,
+html.win-hoverable.win-navbar.win-navbar-opening button:enabled.win-navbar-invokebutton:hover .win-navbar-ellipsis {
+    color: #ccc;
+}
+
+.win-commandingsurface .win-commandingsurface-overflowarea.win-menu{
+    background-color: @themeColor;
+}
+
+/*#endregion*/

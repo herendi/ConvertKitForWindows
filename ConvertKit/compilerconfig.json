@@ -1,0 +1,14 @@
+﻿[
+  {
+    "outputFile": "src/pages/home/home.css",
+    "inputFile": "src/pages/home/home.less"
+  },
+  {
+    "outputFile": "src/pages/default.css",
+    "inputFile": "src/pages/default.less"
+  },
+  {
+    "outputFile": "src/pages/login/Login.css",
+    "inputFile": "src/pages/login/Login.less"
+  }
+]

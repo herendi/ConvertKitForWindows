@@ -1,0 +1,83 @@
+﻿#contenthost {
+    background-color: #2c3748;
+}
+
+section.login {
+    color: #fff;
+    background-color: #2c3748;
+
+    form.login-form {
+        margin: 3rem 0 0 0;
+        padding: 3px;
+        border: solid rgba(84,119,173,0.3) 2px;
+        border-radius: 10px;
+
+        > div {
+            padding: 5px;
+            border: solid rgba(84,119,173,0.3) 2px;
+            border-radius: 10px;
+
+            > div {
+                padding: 4rem 2rem 0 2rem;
+                background: #f2f2f2;
+                color: #2c3748;
+                border-radius: 10px;
+                min-height: 254px;
+
+                h3 {
+                    font-weight: 200;
+                    margin-bottom: 2rem;
+                }
+
+                button.win-button-primary {
+                    &:active, &[disabled] {
+                        background-color: #808080;
+                    }
+
+                    &[disabled] {
+                        background-color: rgba(130, 130, 130, 0.8);
+                        color: #fff;
+                    }
+                }
+
+                progress.loading {
+                    width: 95%;
+                    max-width: 95%;
+                    margin: 1rem auto 0 auto;
+                }
+            }
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+
+            label.control-label {
+                font-weight: 500;
+            }
+
+            .win-textbox {
+                display: block;
+                width: 100%;
+                background-color: #ffffff;
+                border-color: #ccc;
+                color: #333;
+
+                &:hover {
+                    border-color: rgba(0,99,177,.7);
+                }
+
+                &:focus, &:active {
+                    border-color: rgba(0,99,177,1);
+                }
+            }
+        }
+    }
+
+    hr {
+        margin: 3rem 0;
+    }
+
+    a {
+        color: #f2f2f2;
+    }
+}

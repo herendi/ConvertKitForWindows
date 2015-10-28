@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Package xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10" xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest" xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10" IgnorableNamespaces="uap mp">
+  <Identity Name="8d5e151b-e2da-40d0-913f-40c047ec1c2c" Version="1.0.0.0" Publisher="CN=Joshua" />
+  <mp:PhoneIdentity PhoneProductId="8d5e151b-e2da-40d0-913f-40c047ec1c2c" PhonePublisherId="00000000-0000-0000-0000-000000000000" />
+  <Properties>
+    <DisplayName>ConvertKit</DisplayName>
+    <PublisherDisplayName>Joshua</PublisherDisplayName>
+    <Logo>src\images\storelogo.png</Logo>
+  </Properties>
+  <Dependencies>
+    <TargetDeviceFamily Name="Windows.Universal" MinVersion="10.0.0.0" MaxVersionTested="10.0.0.0" />
+  </Dependencies>
+  <Resources>
+    <Resource Language="x-generate" />
+  </Resources>
+  <Applications>
+    <Application Id="App" StartPage="src\pages\default.html">
+      <uap:VisualElements DisplayName="ConvertKit" Description="ConvertKit" BackgroundColor="transparent" Square150x150Logo="src\images\Square150x150Logo.png" Square44x44Logo="src\images\Square44x44Logo.png">
+        <uap:DefaultTile Wide310x150Logo="src\images\Wide310x150Logo.png">
+          <uap:ShowNameOnTiles>
+            <uap:ShowOn Tile="square150x150Logo" />
+            <uap:ShowOn Tile="wide310x150Logo" />
+          </uap:ShowNameOnTiles>
+        </uap:DefaultTile>
+        <uap:SplashScreen Image="src\images\ck-splash.png" BackgroundColor="#015d90" />
+      </uap:VisualElements>
+      <Extensions>
+        <Extension Category="windows.backgroundTasks" StartPage="src\libraries\custom\Tasks\TimerTask.js">
+          <BackgroundTasks>
+            <Task Type="timer" />
+          </BackgroundTasks>
+        </Extension>
+      </Extensions>
+    </Application>
+  </Applications>
+  <Capabilities>
+    <Capability Name="internetClient" />
+  </Capabilities>
+</Package>
