@@ -12,7 +12,7 @@ Things I've tried:
 
 1. Place the content of `App.HomeController.HandleSignoutEvent` in a timeout and wait for up to **3** seconds. The app will still crash.
 2. Place the content of `App.HomeController.HandleSignoutEvent` in a WinJS promise. The app will still crash.
-3. Place a breakpoint in `App.HomeController.HandleSignoutEvent` right before the `this.ShowDialog` call, then "continue" execution after it's hit. **This works**, and is the only way that the app will not crash.
+3. Place a breakpoint in `App.HomeController.HandleSignoutEvent` right before the [`this.ShowDialog`](https://github.com/nozzlegear/ConvertKitForWindows/blob/WinJS-Issue-1408/ConvertKit/src/pages/home/HomeController.ts#L132) call, then "continue" execution after it's hit. **This works**, and is the only way that the app will not crash.
 
 To reproduce the problem, I've set the app to debug mode. Just fire it up, expand the AppBar after the page loads and click on the "Sign out" secondary command. The app will crash with the error shown above.
 
