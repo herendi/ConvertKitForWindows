@@ -50,6 +50,8 @@ module App
             if (Main.Debug)
             {
                 WinJS.Navigation.navigate("ms-appx:///src/pages/home/home.html");
+
+                return;
             }
 
             if (!this.SecretKey())

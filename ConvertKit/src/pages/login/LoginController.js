@@ -15,6 +15,7 @@ var App;
             this.HandleLoginEvent = function (context, event) {
                 if (App.Main.Debug) {
                     WinJS.Navigation.navigate("ms-appx:///src/pages/home/home.html");
+                    return;
                 }
                 if (!_this.SecretKey()) {
                     _this.ShowErrorDialog("You must enter a valid API key to continue.");

@@ -73,7 +73,7 @@ var App;
         /**
         A boolean that switches the app to debug mode, no longer requiring a secret key.
         */
-        Main.Debug = false;
+        Main.Debug = true;
         Main.Start = function () {
             var app = WinJS.Application;
             var activation = Windows.ApplicationModel.Activation;

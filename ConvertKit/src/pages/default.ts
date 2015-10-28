@@ -100,7 +100,7 @@ module App
         /**
         A boolean that switches the app to debug mode, no longer requiring a secret key.
         */
-        static Debug = false;
+        static Debug = true;
 
         static Start = () =>
         {
