@@ -29,8 +29,33 @@ section.with-title {
 section.with-title.with-appbar {
   height: calc(100% -  208px);
 }
+section .title {
+  padding: 0;
+  margin: 0;
+  padding-bottom: 1.3rem;
+  margin-bottom: 1.5rem;
+  border-bottom: 1px solid #ccc;
+}
 .ms-row {
   margin-bottom: 1em;
+}
+.win-type-label {
+  font-family: "Segoe UI", sans-serif, "Segoe MDL2 Assets", Symbols;
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 1.333;
+  margin: 1rem 0 0;
+}
+button.win-button.win-button-danger {
+  background-color: #c71d1d;
+  color: #fff;
+}
+button.win-button.win-button-danger:focus,
+button.win-button.win-button-danger:hover {
+  background-color: #c9302c;
+}
+.block {
+  display: block;
 }
 .text-right {
   text-align: right;
@@ -70,11 +95,16 @@ img.img-bordered {
 .page-section {
   padding-top: 1.5rem;
 }
-progress.loading {
-  max-width: 60%;
-  margin: 0 auto;
+progress {
+  max-width: 50%;
   color: #015d90;
   display: block;
+}
+progress.loading {
+  margin: 0 auto;
+}
+progress.left {
+  margin: 0;
 }
 /*#region WinJS AppBar*/
 .win-commandingsurface .win-commandingsurface-actionarea {

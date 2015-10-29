@@ -1,18 +1,21 @@
 ﻿// Copyright (c) Microsoft Corp.  All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 
-(function () {
+(function ()
+{
     "use strict";
 
     // A property processor should return this if the intention is that the return value is not to be set on the control property
     var doNotSetOptionOnControl = {};
 
     // Check if property starts with 'on' to see if it's an event handler
-    function isPropertyEventHandler(propertyName) {
+    function isPropertyEventHandler(propertyName)
+    {
         return propertyName[0] === "o" && propertyName[1] === "n";
     }
 
     // Check if two WinJS layouts are considered the same
-    function isSameLayout(layout1, layout2) {
+    function isSameLayout(layout1, layout2)
+    {
         if (layout1 && layout2 && layout1.type && layout2.type) {
             return objectShallowEquals(layout1, layout2);
         } else {
@@ -20,7 +23,8 @@
         }
     };
 
-    function arrayShallowEquals(array1, array2) {
+    function arrayShallowEquals(array1, array2)
+    {
         if (array1 === array2) {
             return true;
         }
@@ -36,7 +40,8 @@
     }
 
     // Perform a shallow comparison of two objects
-    function objectShallowEquals(object1, object2) {
+    function objectShallowEquals(object1, object2)
+    {
         if (object1 === object2) {
             return true;
         }
@@ -53,8 +58,10 @@
         return true;
     }
 
-    function addBindings(controls, eventConfig) {
-        Object.keys(controls).forEach(function (name) {
+    function addBindings(controls, eventConfig)
+    {
+        Object.keys(controls).forEach(function (name)
+        {
             var controlConfiguration = controls[name];
             var eventsChangingProperties = eventConfig[name];
             var ctor = WinJS.Utilities.getMember("WinJS.UI." + name);
@@ -64,7 +71,8 @@
             var bindingName = "win" + name;
 
             ko.bindingHandlers[bindingName] = {
-                init: function (element, valueAccessor, allBindings, viewModel, bindingContext) {
+                init: function (element, valueAccessor, allBindings, viewModel, bindingContext)
+                {
 
                     // The options for the control
                     var value = valueAccessor();
@@ -102,7 +110,8 @@
                     if (eventConfig[name]) {
                         var events = eventConfig[name];
                         for (var event in events) {
-                            ko.utils.registerEventHandler(element, event, function changed(e) {
+                            ko.utils.registerEventHandler(element, event, function changed(e)
+                            {
 
                                 // Iterate over the properties that change as a result of the events
                                 for (var propertyIndex in eventConfig[name][event]) {
@@ -121,16 +130,24 @@
                     }
 
                     // Add disposal callback to dispose the WinJS control when it's not needed anymore
-                    ko.utils.domNodeDisposal.addDisposeCallback(element, function (e) {
+                    ko.utils.domNodeDisposal.addDisposeCallback(element, function (e)
+                    {
                         if (element.winControl) {
                             element.winControl.dispose();
                         }
                     });
 
+                    //Get all bindings and check for an onAfterInit event
+                    var bindings = allBindings();
+                    if (bindings && bindings[bindingName] && bindings[bindingName]["onAfterInit"]) {
+                        bindings[bindingName].onAfterInit(viewModel, element);
+                    }
+
                     return { controlsDescendantBindings: bindDescendantsBeforeParent };
                 },
 
-                update: function (element, valueAccessor, allBindings, viewModel, bindingContext) {
+                update: function (element, valueAccessor, allBindings, viewModel, bindingContext)
+                {
                     // Get the WinJS control 
                     var control = element.winControl;
                     var value = valueAccessor();
@@ -156,13 +173,20 @@
                             }
                         }
                     }
+
+                    //Get all bindings and check for an onAfterInit event
+                    var bindings = allBindings();
+                    if (bindings && bindings[bindingName] && bindings[bindingName]["onAfterUpdate"]) {
+                        bindings[bindingName].onAfterUpdate(viewModel, element);
+                    }
                 }
             }
         });
     }
 
     // Helper for diffing between an obserable array and binding list
-    function bindingListWatch(value, oldValue, sourceElement) {
+    function bindingListWatch(value, oldValue, sourceElement)
+    {
         var unpacked = ko.unwrap(value);
         // Will create a bindingList once per new observable array
         var retVal = doNotSetOptionOnControl;
@@ -177,17 +201,20 @@
                 value._winKoBindingList = bindingList;
 
                 // Subscribe to the array diff callback for observable array changes
-                value._winKoChangesSubscription = value.subscribe(function (newValue) {
+                value._winKoChangesSubscription = value.subscribe(function (newValue)
+                {
                     if (!value._winKoChangesSubscriptionDisabled) {
 
                         // disable binding list callbacks to prevent an infinte loop
                         bindingList._winKoChangesSubscriptionDisabled = true;
                         var offset = 0;
 
-                        var deletes = newValue.filter(function (item) {
+                        var deletes = newValue.filter(function (item)
+                        {
                             return item.status === "deleted";
                         });
-                        var adds = newValue.filter(function (item) {
+                        var adds = newValue.filter(function (item)
+                        {
                             return item.status === "added";
                         });
                         for (var deletedItem in deletes) {
@@ -216,7 +243,8 @@
                 // Binding list may also change on its accord (i.e. ListView reorder) for which we should update the observable array
                 var bindingListMutationEvents = ["itemchanged", "itemmoved", "itemmutated", "itemremoved", "reload"];
 
-                var updateOriginalArray = function () {
+                var updateOriginalArray = function ()
+                {
                     if (!bindingList._winKoChangesSubscriptionDisabled) {
 
                         // Disable observable array callbacks to prevent an infinite loop
@@ -229,12 +257,14 @@
                     }
                 };
 
-                bindingListMutationEvents.forEach(function (event) {
+                bindingListMutationEvents.forEach(function (event)
+                {
                     bindingList.addEventListener(event, updateOriginalArray);
                 });
 
                 // Dispose the old subscription or when the element gets disposed
-                ko.utils.domNodeDisposal.addDisposeCallback(sourceElement(), function () {
+                ko.utils.domNodeDisposal.addDisposeCallback(sourceElement(), function ()
+                {
                     value._winKoChangesSubscription.dispose();
                 });
 
@@ -252,7 +282,8 @@
     }
 
     // Helper for itemTemplate changes
-    function itemTemplateWatch(value, oldValue, sourceElement, property) {
+    function itemTemplateWatch(value, oldValue, sourceElement, property)
+    {
         var retVal = doNotSetOptionOnControl;
         value = ko.unwrap(value);
         var template = value;
@@ -261,7 +292,8 @@
         sourceElement = sourceElement();
         // If the renderer is a string that means we are trying to render a KO template
         if (typeof value === "string") {
-            renderer = WinJS.UI.simpleItemRenderer(function (item) {
+            renderer = WinJS.UI.simpleItemRenderer(function (item)
+            {
                 var element = document.createElement("div");
                 ko.renderTemplate(template, item.data, {}, element);
                 return element;
@@ -286,7 +318,8 @@
         },
         AppBarCommand: {
             propertyProcessor: {
-                'type': function (value, appBarCommandElement, update) {
+                'type': function (value, appBarCommandElement, update)
+                {
                     if (!appBarCommandElement._winTypeInitialized) {
                         appBarCommandElement._winTypeInitialized = true;
                         return value;
@@ -300,7 +333,8 @@
         BackButton: {},
         Command: {
             propertyProcessor: {
-                'type': function (value, commandElement, update) {
+                'type': function (value, commandElement, update)
+                {
                     if (!commandElement._winTypeInitialized) {
                         commandElement._winTypeInitialized = true;
                         return value;
@@ -314,10 +348,12 @@
         DatePicker: {},
         FlipView: {
             propertyProcessor: {
-                'itemTemplate': function (value, flipViewElement, current) {
+                'itemTemplate': function (value, flipViewElement, current)
+                {
                     return itemTemplateWatch(value, current, flipViewElement, 'ItemTemplate');
                 },
-                'itemDataSource': function (value, flipViewElement, current) {
+                'itemDataSource': function (value, flipViewElement, current)
+                {
                     return bindingListWatch(value, current, flipViewElement);
                 }
             },
@@ -331,19 +367,24 @@
         ItemContainer: {},
         ListView: {
             propertyProcessor: {
-                'groupHeaderTemplate': function (value, listViewElement, current) {
+                'groupHeaderTemplate': function (value, listViewElement, current)
+                {
                     return itemTemplateWatch(value, current, listViewElement, 'GroupHeaderTemplate');
                 },
-                'groupDataSource': function (value, listViewElement, current) {
+                'groupDataSource': function (value, listViewElement, current)
+                {
                     return bindingListWatch(value, current, listViewElement);
                 },
-                'itemTemplate': function (value, listViewElement, current) {
+                'itemTemplate': function (value, listViewElement, current)
+                {
                     return itemTemplateWatch(value, current, listViewElement, 'ItemTemplate');
                 },
-                'itemDataSource': function (value, listViewElement, current) {
+                'itemDataSource': function (value, listViewElement, current)
+                {
                     return bindingListWatch(value, current, listViewElement);
                 },
-                'layout': function (value, listViewElement, current) {
+                'layout': function (value, listViewElement, current)
+                {
                     var retVal = doNotSetOptionOnControl;
                     var unpacked = ko.unwrap(value);
                     var listViewElement = listViewElement();
@@ -359,14 +400,16 @@
             },
             postCtorPropertyProcessor: {
                 // Selection needs to set selection object on the list view and needs the control to be initialized
-                'selection': function (value, listViewElement, current) {
+                'selection': function (value, listViewElement, current)
+                {
                     var unpacked = ko.unwrap(value);
                     listViewElement = listViewElement();
 
                     // If value is a ko.observableArray, subscribe to selection changes on it
                     if (Array.isArray(unpacked) && ko.isWriteableObservable(value)) {
                         if (!listViewElement._winKoSelectionChangedHandlerSet) {
-                            listViewElement.winControl.addEventListener("selectionchanged", function () {
+                            listViewElement.winControl.addEventListener("selectionchanged", function ()
+                            {
                                 var currSelectionArray = listViewElement.winControl.selection.getIndices();
                                 var oldSelection = ko.unwrap(value);
                                 if (!arrayShallowEquals(oldSelection, currSelectionArray)) {
@@ -390,10 +433,12 @@
         Pivot: {
             bindDescendantsBeforeParent: true,
             propertyProcessor: {
-                'selectedIndex': function (value, pivotElement, current) {
+                'selectedIndex': function (value, pivotElement, current)
+                {
                     // Temporary workaround for selectionchanged not updating this property until WinJS issue #1317 is fixed
                     if (!pivotElement._winKoSelectedIndexHandlerSet) {
-                        pivotElement().addEventListener("selectionchanged", function (e) {
+                        pivotElement().addEventListener("selectionchanged", function (e)
+                        {
                             if (ko.isWriteableObservable(value)) {
                                 value(e.detail.index);
                             }
@@ -402,10 +447,12 @@
                     }
                     return ko.unwrap(value);
                 },
-                'selectedItem': function (value, pivotElement, current) {
+                'selectedItem': function (value, pivotElement, current)
+                {
                     // Temporary workaround for selectionchanged not updating this property until WinJS issue #1317 is fixed
                     if (!pivotElement._winKoSelectedItemHandlerSet) {
-                        pivotElement().addEventListener("selectionchanged", function (e) {
+                        pivotElement().addEventListener("selectionchanged", function (e)
+                        {
                             if (ko.isWriteableObservable(value)) {
                                 value(pivotElement().winControl.items.getAt(e.detail.index));
                             }
@@ -431,7 +478,8 @@
         },
         Tooltip: {
             propertyProcessor: {
-                'contentElement': function (value, toolTipElement, current) {
+                'contentElement': function (value, toolTipElement, current)
+                {
                     var value = ko.unwrap(value);
                     var element = document.querySelector(value);
                     return element;

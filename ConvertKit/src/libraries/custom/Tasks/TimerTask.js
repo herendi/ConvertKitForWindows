@@ -23,8 +23,9 @@ var App;
             ;
         };
         TimerTask.GetSubscriberCount = function () {
+            var settings = JSON.parse(App.Utils.LocalStorage.Retrieve(App.Main.NotificationSettingsKey) || "{}");
             var key = App.Utils.LocalStorage.Retrieve(App.Main.SecretStorageKey);
-            if (!key) {
+            if (!key || !settings || !settings.Enabled) {
                 close();
                 return;
             }

@@ -4,11 +4,6 @@
 section.home {
   background-color: #eee;
 }
-section.home h4 {
-  padding-bottom: 1.3rem;
-  margin-bottom: 1.5rem;
-  border-bottom: 1px solid #ccc;
-}
 section.home .subscribers {
   overflow: hidden;
   overflow-y: auto;

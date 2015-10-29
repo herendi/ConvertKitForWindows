@@ -5,15 +5,10 @@ var App;
             var _this = this;
             //#region Variables
             this.Service = new ConvertKit.SubscriberService(App.Utils.LocalStorage.Retrieve(App.Main.SecretStorageKey));
-            this.TotalSubscribers = ko.observable(0);
-            this.Subscribers = ko.observableArray([]);
+            this.SubscriberList = ko.observable({});
             this.IsLoading = ko.observable(false);
             this.HandleLoadSuccess = function (response) {
-                _.forEach(response.subscribers, function (x) {
-                    x.email_address = "concealed-for-demo@example.com";
-                });
-                _this.TotalSubscribers(response.total_subscribers);
-                _this.Subscribers.push.apply(_this.Subscribers, response.subscribers);
+                _this.SubscriberList(response);
                 _this.IsLoading(false);
             };
             this.HandleLoadFailure = function (error) {
@@ -30,44 +25,67 @@ var App;
                         };
                         subs.push(sub);
                     }
-                    _this.Subscribers.push.apply(_this.Subscribers, subs);
-                    _this.TotalSubscribers(subs.length);
+                    var output = {
+                        page: 1,
+                        subscribers: subs,
+                        total_subscribers: subs.length,
+                        total_pages: 1
+                    };
+                    _this.SubscriberList(output);
                     return;
                 }
-                _this.ShowDialog("Error", "Failed to retrieve list of subscribers.");
-            };
-            this.ShowDialog = function (title, message, commands) {
-                var dialog = new Windows.UI.Popups.MessageDialog(message, title);
-                if (commands) {
-                    dialog.commands.push.apply(dialog.commands, commands);
-                }
-                dialog.showAsync();
+                App.Utils.ShowDialog("Error", "Failed to retrieve list of subscribers.");
             };
             this.GravatarHash = function (email) {
                 return md5(email.toLowerCase().trim());
             };
             //#endregion
             //#region Page event handlers
+            /**
+            Attaches or reattaches certain event listeners when the controller is constructed or reattached from the WinJS.Navigation.state.
+            */
+            this.Prepare = function () {
+                //Listen for navigations away from this page
+                WinJS.Navigation.onbeforenavigate = _this.HandleNavigateAway;
+            };
+            /**
+            Stores the controller itself in WinJS.Navigation.state when navigating away, which lets us
+            reattach when coming back, rather than recreating the controller.
+            */
+            this.HandleNavigateAway = function (event) {
+                //Extend the nav state to store the current sub list
+                WinJS.Navigation.state = _.extend({}, WinJS.Navigation.state, { SubscriberList: _this.SubscriberList(), HomeController: _this });
+                //Remove this event listener until the controller is reattached.
+                WinJS.Navigation.onbeforenavigate = null;
+            };
+            this.HandleAppBarUpdate = function (context, element) {
+                //AppBars are kind of jerky, taking a bit to show up. Wait 1 second for it to get 
+                //loaded into the dom, then slide it up.
+                setTimeout(function () {
+                    element.style.display = null;
+                    element.winControl.forceLayout();
+                    WinJS.UI.Animation.slideUp(element);
+                }, 900);
+            };
+            /**
+            Handles refreshing the list of subscribers.
+            */
             this.HandleRefreshEvent = function (context, event) {
                 if (!_this.IsLoading()) {
                     _this.IsLoading(true);
-                    //Empty subscribers
-                    _this.Subscribers([]);
                     _this.Service.GetAsync().done(_this.HandleLoadSuccess, _this.HandleLoadFailure);
                 }
             };
-            this.HandleSignoutEvent = function (context, event) {
-                var confirmCommand = new Windows.UI.Popups.UICommand("Sign out", function (command) {
-                    App.Utils.LocalStorage.Delete(App.Main.SecretStorageKey);
-                    //Send the user back to the login page.
-                    WinJS.Navigation.navigate("ms-appx:///src/pages/login/login.html");
-                });
-                var cancelCommand = new Windows.UI.Popups.UICommand("Cancel");
-                _this.ShowDialog("Are you sure you want to sign out?", "Signing out will erase your secret key from this app's storage. You'll need to enter it again to use ConvertKit for Windows.", [confirmCommand, cancelCommand]);
+            /**
+            Navigates the user to the settingspage.
+            */
+            this.HandleNavigateToSettingsEvent = function (context, event) {
+                WinJS.Navigation.navigate("ms-appx:///src/pages/settings/settings.html");
             };
+            this.Prepare();
             this.RegisterKnockoutSubscriptions();
-            if (state && state.LoginResult) {
-                this.HandleLoadSuccess(state.LoginResult);
+            if (state && state.SubscriberList) {
+                this.HandleLoadSuccess(state.SubscriberList);
                 return;
             }
             ;
@@ -92,7 +110,16 @@ var App;
                 processed: function (element, options) {
                 },
                 ready: function (element, options) {
-                    var client = new HomeController();
+                    var client;
+                    //A previous version of the HomeController may still be attached to the WinJS state.
+                    if (WinJS.Navigation.state && WinJS.Navigation.state.HomeController) {
+                        client = WinJS.Navigation.state.HomeController;
+                        //Reattach event listeners, chiefly WinJS nav listeners that detach when navigating away.
+                        client.Prepare();
+                    }
+                    else {
+                        client = new HomeController(options || WinJS.Navigation.state);
+                    }
                     //Define the 'client' namespace, which makes this controller available to the JS console debugger.
                     WinJS.Namespace.define("client", client);
                     ko.applyBindings(client, element);

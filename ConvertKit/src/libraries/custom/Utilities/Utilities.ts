@@ -61,7 +61,19 @@
 
         //#endregion
 
-        static GetAppSetting = (key: string) =>
+        static ShowDialog = (title: string, message: string, commands?: Windows.UI.Popups.IUICommand[]) =>
+        {
+            var dialog = new Windows.UI.Popups.MessageDialog(message, title);
+
+            if (commands)
+            {
+                dialog.commands.push.apply(dialog.commands, commands);
+            }
+
+            dialog.showAsync();
+        };
+
+        static GetResourceValue = (key: string) =>
         {
             var resource: { getString: (key: string) => string } = (<any>Windows.ApplicationModel.Resources.ResourceLoader).getForViewIndependentUse("AppSettings.private");
             

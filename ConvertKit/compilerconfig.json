@@ -10,5 +10,9 @@
   {
     "outputFile": "src/pages/login/Login.css",
     "inputFile": "src/pages/login/Login.less"
+  },
+  {
+    "outputFile": "src/pages/settings/Settings.css",
+    "inputFile": "src/pages/settings/Settings.less"
   }
 ]

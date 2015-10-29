@@ -31,9 +31,10 @@ module App
 
         static GetSubscriberCount = () =>
         {
+            var settings: Entities.NotificationSettings = JSON.parse(Utils.LocalStorage.Retrieve(Main.NotificationSettingsKey) || "{}");
             var key = Utils.LocalStorage.Retrieve(Main.SecretStorageKey);
 
-            if (!key)
+            if (!key || !settings || !settings.Enabled)
             {
                 close();
 

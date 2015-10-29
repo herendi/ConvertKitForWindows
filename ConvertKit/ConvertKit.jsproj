@@ -99,6 +99,11 @@
     <Content Include="src\pages\login\Login.min.css" />
     <Content Include="src\pages\login\LoginController.js" />
     <Content Include="src\pages\login\LoginController.js.map" />
+    <Content Include="src\pages\settings\Settings.css" />
+    <Content Include="src\pages\settings\settings.html" />
+    <Content Include="src\pages\settings\Settings.less" />
+    <Content Include="src\pages\settings\SettingsController.js" />
+    <Content Include="src\pages\settings\SettingsController.js.map" />
     <Content Include="src\pages\variables.less" />
     <Content Include="tsd.json" />
     <TypeScriptCompile Include="src\libraries\custom\ConvertKit\ConvertKit.ts" />
@@ -135,10 +140,13 @@
     <TypeScriptCompile Include="src\pages\home\HomeController.ts" />
     <Content Include="src\pages\login\login.html" />
     <TypeScriptCompile Include="src\pages\login\LoginController.ts" />
+    <TypeScriptCompile Include="src\pages\settings\SettingsController.ts" />
     <TypeScriptCompile Include="typings\blueimp-md5\blueimp-md5.d.ts" />
     <TypeScriptCompile Include="typings\cryptojs\cryptojs.d.ts" />
+    <TypeScriptCompile Include="typings\custom\App.d.ts" />
     <TypeScriptCompile Include="typings\custom\reqwest.d.ts" />
     <TypeScriptCompile Include="typings\custom\ConvertKit.d.ts" />
+    <TypeScriptCompile Include="typings\custom\Windows.UI.Core.SystemNavigationManager.d.ts" />
     <TypeScriptCompile Include="typings\custom\windows.web.http.d.ts" />
     <TypeScriptCompile Include="typings\knockout\knockout.d.ts" />
     <TypeScriptCompile Include="typings\lodash\lodash.d.ts" />

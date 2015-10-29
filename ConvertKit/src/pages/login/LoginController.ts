@@ -6,7 +6,6 @@ module App
     {
         constructor()
         {
-            this.RegisterPageEvents();
             this.RegisterKnockoutSubscriptions();
         }
 
@@ -23,11 +22,6 @@ module App
         //#endregion
 
         //#region Utility functions
-
-        private RegisterPageEvents()
-        {
-
-        }
 
         private RegisterKnockoutSubscriptions()
         {
@@ -78,7 +72,7 @@ module App
                 App.Utils.LocalStorage.Save(App.Main.SecretStorageKey, this.SecretKey());
 
                 //Navigate to home page, passing along the subscriber list
-                WinJS.Navigation.navigate("ms-appx:///src/pages/home/home.html", { LoginResult: resp });
+                WinJS.Navigation.navigate("ms-appx:///src/pages/home/home.html", { SubscriberList: resp });
             };
 
             var fail = (reason) =>

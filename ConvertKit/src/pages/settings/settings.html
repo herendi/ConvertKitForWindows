@@ -1,0 +1,49 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Settings Page</title>
+
+    <link href="settings.css" rel="stylesheet" />
+</head>
+<body>
+    <section role="main" class="settings page-section with-title ms-grid">
+        <h4 class="win-type-title title">
+            Settings
+        </h4>
+        <div class="setting">
+            <h4 class="win-type-subtitle">
+                Background Notifications
+            </h4>
+            <div data-bind="winToggleSwitch: { checked: Notifications.Enabled, disabled: IsLoading }"></div>
+            <label class="win-type-label block">Check for new subscribers every:</label>
+            <select class="win-textbox"
+                    data-bind="options: [{ Text: '15 Minutes', Value: 15 }, { Text: '30 Minutes', Value: 30 }, {Text: '60 Minutes', Value: 60}, {Text: '12 Hours', Value: 720}, { Text: '24 Hours', Value: 1440}], optionsText: 'Text', optionsValue: 'Value', value: Notifications.Timer, disable: IsLoading "></select>
+            <progress class="loading left" style="display:none;" data-bind="visible: IsLoading() === true"></progress>
+        </div>
+        <div class="setting">
+            <h4 class="win-type-subtitle">
+                About
+            </h4>
+            <div class="ms-row">
+                <div class="col-1-2">
+                    <p class="win-type-body">
+                        My name is <a href="https://nozzlegear.com/about">Joshua Harms</a>, and I built this application because I needed a way to get alerts when new subscribers joined my ConvertKit list. I'd be a poor ConvertKit user if I didn't mention that I'm writing <a href="https://nozzlegear.com/shopify-development-handbook?ref=ConvertKitForWindows">The Shopify Development Handbook</a>, a premium course for building Shopify apps and integrations with C# and ASP.NET.
+                    </p>
+                    <p class="win-type-body">
+                        This application is an unofficial port of <a href="https://convertkit.com">ConvertKit</a> for the universal Windows platform. It's built with <a href="https://github.com/winjs/winjs">WinJS</a>, an implementation of HTML, JavaScript and TypeScript that runs both natively in Windows and can be loaded as a library in the browser. In Windows, a WinJS app is both first-class and native, which means the app runs on bare metal rather than being loaded through a performance-killing webview like you'd find on iOS or Android.
+                    </p>
+                    <p class="win-type-body">
+                        ConvertKit for Windows is open source. You can view the code, make edits, pull requests or just build it for yourself at <a href="https://github.com/nozzlegear/ConvertKitForWindows">https://github.com/nozzlegear/ConvertKitForWindows</a>
+                    </p>
+                    <button class="win-button" data-bind="click: HandleSignoutEvent">
+                        Sign out and erase secret key
+                    </button>
+                </div>
+                <div class="col-1-2">
+                    <img class="img-responsive img-thumbnail" alt="Joshua Harms" src="https://www.gravatar.com/avatar/65bd1b83c036c0b2717209efe12c1887.jpg?s=300&amp;r=g">
+                </div>
+            </div>
+        </div>
+    </section>
+</body>
+</html>

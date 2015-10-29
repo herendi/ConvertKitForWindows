@@ -8,12 +8,12 @@
 <body>
     <section role="main" class="home page-section with-appbar with-title ms-grid">
         <progress class="loading" style="display:none;" data-bind="visible: IsLoading() === true"></progress>
-        <h4 class="win-h4 title">
+        <h4 class="win-type-title title">
             Latest 250 Subscribers
-            <span class="pull-right" data-bind="text: TotalSubscribers() + ' Total Subscribers'"></span>
+            <span class="pull-right" data-bind="text: (SubscriberList().total_subscribers || 0) + ' Total Subscribers'"></span>
         </h4>
         <section class="subscribers" id="subscriber-container" style="display:none;" data-bind="visible: IsLoading() === false">
-            <!-- ko foreach: Subscribers -->
+            <!-- ko foreach: SubscriberList().subscribers -->
             <div class="subscriber ms-row vc">
                 <div class="col-1-6 nb">
                     <img class="img-circle img-bordered centered"
@@ -22,7 +22,7 @@
                 </div>
                 <div class="col-1-2 nb">
                     <p class="win-type-body name" data-bind="text: first_name"></p>
-                    <p class="win-type-body email" data-bind="text: email_address"></p>
+                    <p class="win-type-body email" data-bind="text: App.Main.Debug ? 'concealed-for-demo@example.com' : email_address"></p>
                 </div>
                 <div class="col-1-6 nb">
                     <p class="win-type-body created" data-bind="text: moment(created_at).format('MMMM Do, YYYY')"></p>
@@ -36,11 +36,9 @@
         </section>
     </section>
     <!--#region AppBar -->
-    <div data-bind="winAppBar">
-        <!--<button title="Settings"
-                data-bind="winAppBarCommand: {id: 'settings', label: 'Settings', icon: 'settings', section: 'secondary', onclick: HandleSignoutEvent}"></button>-->
-        <button title="Sign out"
-                data-bind="winAppBarCommand: {id: 'clear', label: 'Sign out', icon: 'blockcontact', section: 'secondary', onclick: HandleSignoutEvent}"></button>
+    <div style="display:none; " data-bind="winAppBar: { onAfterUpdate: HandleAppBarUpdate}">
+        <button title="Settings"
+                data-bind="winAppBarCommand: {id: 'settings', label: 'Settings', icon: 'settings', section: 'secondary', onclick: HandleNavigateToSettingsEvent}"></button>
         <button title="Refresh"
                 data-bind="winAppBarCommand: {id: 'reload', label: 'Refresh', icon: 'refresh', onclick: HandleRefreshEvent}"></button>
     </div>

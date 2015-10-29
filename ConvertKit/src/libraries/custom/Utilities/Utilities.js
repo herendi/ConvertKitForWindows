@@ -45,7 +45,14 @@ var App;
             }
         };
         //#endregion
-        Utils.GetAppSetting = function (key) {
+        Utils.ShowDialog = function (title, message, commands) {
+            var dialog = new Windows.UI.Popups.MessageDialog(message, title);
+            if (commands) {
+                dialog.commands.push.apply(dialog.commands, commands);
+            }
+            dialog.showAsync();
+        };
+        Utils.GetResourceValue = function (key) {
             var resource = Windows.ApplicationModel.Resources.ResourceLoader.getForViewIndependentUse("AppSettings.private");
             return resource.getString(key);
         };
