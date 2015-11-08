@@ -1,0 +1,61 @@
+﻿#contenthost {
+  background-color: #eee;
+}
+section.forms {
+  background-color: #eee;
+}
+section.forms .forms {
+  overflow: hidden;
+  overflow-y: auto;
+}
+section.forms .forms .form {
+  border: 1px solid #ccc;
+  background: #f7f7f7;
+  margin-bottom: 2rem;
+}
+section.forms .forms .form .title {
+  padding: 1rem;
+  display: flex;
+  align-items: center;
+  margin: 0;
+  border-bottom: 1px solid #ccc;
+}
+section.forms .forms .form .title .icon {
+  color: #0088cc;
+  font-size: 2rem;
+  margin-right: 1rem;
+}
+section.forms .forms .form .incentive {
+  padding: 1rem;
+}
+section.forms .forms .form .incentive > span {
+  font-size: 13px;
+  text-transform: uppercase;
+  color: #999;
+}
+section.forms .forms .form .incentive > p {
+  min-height: 40px;
+}
+section.forms .forms .form .action {
+  padding: 1.5rem;
+  text-align: center;
+  border-top: 1px solid #ccc;
+}
+section.forms .forms .form .action > a {
+  text-decoration: none;
+}
+section.forms .forms .form p.win-type-body {
+  margin: .5rem 0;
+}
+section.forms .forms .form p.state {
+  text-transform: capitalize;
+}
+section.forms .forms .form hr {
+  border: none;
+  border-bottom: 1px solid #ccc;
+  margin: 1rem 0;
+  width: 100%;
+}
+section.forms .subscribers .subscriber:last-child hr {
+  display: none;
+}

@@ -201,6 +201,19 @@ module App
             return Main._NotificationSettings;
         }
 
+        /**
+        A static and magical object that persists controller states when navigating. Better than WinJS.navigation.state, which only works when using .back or .forward.
+        */
+        static State: {
+            LoginController?: App.LoginController;
+            HomeController?: App.HomeController;
+            FormsController?: App.FormsController;
+            SettingsController?: App.SettingsController;
+        } = {};
+
+        /**
+        Starts the application
+        */
         static Start = () =>
         {
             var app = WinJS.Application;
@@ -224,6 +237,7 @@ module App
 
                 //Define pages
                 App.HomeController.DefinePage();
+                App.FormsController.DefinePage();
                 App.LoginController.DefinePage();
                 App.SettingsController.DefinePage();
 
@@ -249,6 +263,16 @@ module App
                         .then(() => Main.CreateTimerTask(Main.NotificationSettings.ToUnobservable()))
                         .then(() =>
                         {
+                            return new WinJS.Promise((res, rej) =>
+                            {
+                                //Apply page-level bindings to app. Will not trump view-specific bindings thanks to the custom stopBinding binding.
+                                ko.applyBindings(this);
+
+                                res();
+                            });
+                        })
+                        .then(() =>
+                        {
                             //Check if the user has entered their API key
                             if (Utils.LocalStorage.Retrieve(App.Main.SecretStorageKey) || Main.Debug)
                             {
@@ -270,6 +294,35 @@ module App
             };
 
             app.start();
+        };
+
+        static CurrentPage = ko.observable<string>();
+
+        static HandleNavigateToSubscribers = (context, event) =>
+        {
+            if (Main.CurrentPage() !== App.HomeController.PageId)
+            {
+                WinJS.Navigation.navigate("ms-appx:///src/pages/home/home.html");
+            };
+        };
+
+        static HandleNavigateToForms = (context, event) =>
+        {
+            if (Main.CurrentPage() !== App.FormsController.PageId)
+            {
+                WinJS.Navigation.navigate("ms-appx:///src/pages/forms/forms.html");
+            };
+        };
+
+        /**
+        Navigates the user to the settings page.
+        */
+        static HandleNavigateToSettings = (context, event) =>
+        {
+            if (Main.CurrentPage() !== App.SettingsController.PageId)
+            {
+                WinJS.Navigation.navigate("ms-appx:///src/pages/settings/settings.html");
+            };
         };
     }
 }

@@ -5,6 +5,9 @@
     <title>ConvertKit for Windows</title>
 
     <!-- WinJS references -->
+    <link href="ms-appx:///src/libraries/fonts/fontawesome/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="ms-appx:///src/libraries/fonts/icomoon/icomoon.css" rel="stylesheet" />
+    <link href="ms-appx:///src/libraries/fonts/etlinefont/etlinefont.css" rel="stylesheet" />
     <link href="ms-appx:///src/libraries/winjs/css/ui-light.min.css" rel="stylesheet" />
     <script src="ms-appx:///src/libraries/winjs/js/base.min.js"></script>
     <script src="ms-appx:///src/libraries/winjs/js/ui.min.js"></script>
@@ -17,10 +20,12 @@
     <script src="ms-appx:///src/libraries/moment/moment.min.js"></script>
     <script src="ms-appx:///src/libraries/custom/convertkit/convertkit.js"></script>
     <script src="ms-appx:///src/libraries/custom/Utilities/Utilities.js"></script>
+    <script src="ms-appx:///src/libraries/custom/Knockout.StopBinding/Knockout.StopBinding.js"></script>
 
     <!-- Individual page controllers. Inserted here so they can all call XController.DefinePages -->
     <!-- In a bigger/heavier application, you could require these pages from default.ts -->
     <script src="ms-appx:///src/pages/home/HomeController.js"></script>
+    <script src="ms-appx:///src/pages/forms/FormsController.js"></script>
     <script src="ms-appx:///src/pages/login/LoginController.js"></script>
     <script src="ms-appx:///src/pages/settings/SettingsController.js"></script>
 
@@ -33,6 +38,15 @@
     <header id="appHeader">
         <img class="img-responsive" src="ms-appx:///src/images/logo.png" />
     </header>
-    <div id="contenthost" data-win-control="Application.PageControlNavigator" data-win-options="{home: 'ms-appx:///src/pages/home/home.html'}"></div>
+    <div data-bind="winSplitView">
+        <menu class="pane" data-bind="css: {hide: App.Main.CurrentPage() === App.LoginController.PageId}">
+            <div title="Subscribers" data-bind="winSplitViewCommand: { label: 'Subscribers', icon: 'people', oninvoked: App.Main.HandleNavigateToSubscribers}, css: { active: App.Main.CurrentPage() === App.HomeController.PageId }"></div>
+            <div title="Forms and Landing Pages" data-bind="winSplitViewCommand: { label: 'Forms', icon: 'browsephotos', oninvoked: App.Main.HandleNavigateToForms}, css: { active: App.Main.CurrentPage() === App.FormsController.PageId }"></div>
+            <div data-bind="winSplitViewCommand: { label: 'Settings', icon: 'settings', oninvoked: App.Main.HandleNavigateToSettings}, css: { active: App.Main.CurrentPage() === App.SettingsController.PageId }"></div>
+        </menu>
+        <!-- ko stopBinding: true -->
+        <div id="contenthost" data-win-control="Application.PageControlNavigator" data-win-options="{home: 'ms-appx:///src/pages/home/home.html'}"></div>
+        <!-- /ko -->
+    </div>
 </body>
 </html>

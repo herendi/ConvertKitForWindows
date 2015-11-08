@@ -56,6 +56,7 @@
     <MinimumVisualStudioVersion>$(VersionNumberMajor).$(VersionNumberMinor)</MinimumVisualStudioVersion>
     <DefaultLanguage>en-US</DefaultLanguage>
     <PackageCertificateKeyFile>ConvertKit_TemporaryKey.pfx</PackageCertificateKeyFile>
+    <PackageCertificateThumbprint>EC97D84D63577343024A076DE00655BC4FD7293F</PackageCertificateThumbprint>
   </PropertyGroup>
   <ItemGroup>
     <AppxManifest Include="package.appxmanifest">
@@ -64,6 +65,7 @@
     <Content Include="bower.json" />
     <Content Include="compilerconfig.json" />
     <Content Include="compilerconfig.json.defaults" />
+    <None Include="ConvertKit_TemporaryKey.pfx" />
     <Content Include="packages.config" />
     <Content Include="src\images\ck-splash.scale-200.png" />
     <Content Include="src\images\LockScreenLogo.scale-200.png" />
@@ -79,11 +81,32 @@
     <Content Include="src\libraries\blueimp-md5\md5.min.js" />
     <Content Include="src\libraries\custom\ConvertKit\ConvertKit.js" />
     <Content Include="src\libraries\custom\ConvertKit\ConvertKit.js.map" />
+    <Content Include="src\libraries\custom\Knockout.StopBinding\Knockout.StopBinding.js" />
+    <Content Include="src\libraries\custom\Knockout.StopBinding\Knockout.StopBinding.js.map" />
     <Content Include="src\libraries\custom\navigator.js" />
     <Content Include="src\libraries\custom\Tasks\TimerTask.js" />
     <Content Include="src\libraries\custom\Tasks\TimerTask.js.map" />
     <Content Include="src\libraries\custom\Utilities\Utilities.js" />
     <Content Include="src\libraries\custom\Utilities\Utilities.js.map" />
+    <Content Include="src\libraries\fonts\etlinefont\fonts\et-line.eot" />
+    <Content Include="src\libraries\fonts\etlinefont\fonts\et-line.svg" />
+    <Content Include="src\libraries\fonts\etlinefont\fonts\et-line.ttf" />
+    <Content Include="src\libraries\fonts\etlinefont\fonts\et-line.woff" />
+    <Content Include="src\libraries\fonts\etlinefont\etlinefont.css" />
+    <Content Include="src\libraries\fonts\fontawesome\css\font-awesome.css" />
+    <Content Include="src\libraries\fonts\fontawesome\css\font-awesome.css.map" />
+    <Content Include="src\libraries\fonts\fontawesome\css\font-awesome.min.css" />
+    <Content Include="src\libraries\fonts\fontawesome\fonts\fontawesome-webfont.eot" />
+    <Content Include="src\libraries\fonts\fontawesome\fonts\fontawesome-webfont.svg" />
+    <Content Include="src\libraries\fonts\fontawesome\fonts\fontawesome-webfont.ttf" />
+    <Content Include="src\libraries\fonts\fontawesome\fonts\fontawesome-webfont.woff" />
+    <Content Include="src\libraries\fonts\fontawesome\fonts\fontawesome-webfont.woff2" />
+    <Content Include="src\libraries\fonts\fontawesome\fonts\FontAwesome.otf" />
+    <Content Include="src\libraries\fonts\icomoon\fonts\icomoon.eot" />
+    <Content Include="src\libraries\fonts\icomoon\fonts\icomoon.svg" />
+    <Content Include="src\libraries\fonts\icomoon\fonts\icomoon.ttf" />
+    <Content Include="src\libraries\fonts\icomoon\fonts\icomoon.woff" />
+    <Content Include="src\libraries\fonts\icomoon\icomoon.css" />
     <Content Include="src\libraries\moment\moment.js" />
     <Content Include="src\libraries\moment\moment.min.js" />
     <Content Include="src\libraries\winjs-grid\mscom-grid-ltr.css" />
@@ -94,6 +117,12 @@
     <Content Include="src\pages\default.css" />
     <Content Include="src\pages\default.less" />
     <Content Include="src\pages\default.min.css" />
+    <Content Include="src\pages\forms\forms.css" />
+    <Content Include="src\pages\forms\forms.html" />
+    <Content Include="src\pages\forms\forms.less" />
+    <Content Include="src\pages\forms\forms.min.css" />
+    <Content Include="src\pages\forms\FormsController.js" />
+    <Content Include="src\pages\forms\FormsController.js.map" />
     <Content Include="src\pages\login\Login.css" />
     <Content Include="src\pages\login\Login.less" />
     <Content Include="src\pages\login\Login.min.css" />
@@ -128,6 +157,7 @@
     <Content Include="src\pages\default.html" />
     <Content Include="src\pages\default.js" />
     <Content Include="src\pages\default.js.map" />
+    <TypeScriptCompile Include="src\libraries\custom\Knockout.StopBinding\Knockout.StopBinding.ts" />
     <TypeScriptCompile Include="src\libraries\custom\Tasks\TimerTask.ts" />
     <TypeScriptCompile Include="src\libraries\custom\Utilities\Utilities.ts" />
     <TypeScriptCompile Include="src\pages\default.ts" />
@@ -137,6 +167,7 @@
     <Content Include="src\pages\home\home.min.css" />
     <Content Include="src\pages\home\HomeController.js" />
     <Content Include="src\pages\home\HomeController.js.map" />
+    <TypeScriptCompile Include="src\pages\forms\FormsController.ts" />
     <TypeScriptCompile Include="src\pages\home\HomeController.ts" />
     <Content Include="src\pages\login\login.html" />
     <TypeScriptCompile Include="src\pages\login\LoginController.ts" />

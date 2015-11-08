@@ -47,7 +47,18 @@ var App;
         //#region Utility functions
         LoginController.prototype.RegisterKnockoutSubscriptions = function () {
         };
-        //#endregion
+        Object.defineProperty(LoginController, "PageId", {
+            //#endregion
+            /**
+            The page's id.
+            */
+            get: function () {
+                return "Login";
+            },
+            enumerable: true,
+            configurable: true
+        });
+        ;
         /**
         Defines the controller's WinJS navigation functions.
         */
@@ -59,6 +70,8 @@ var App;
                 },
                 ready: function (element, options) {
                     var client = new LoginController();
+                    //Track the current page
+                    App.Main.CurrentPage(LoginController.PageId);
                     //Define the 'client' namespace, which makes this controller available to the JS console debugger.
                     WinJS.Namespace.define("client", client);
                     ko.applyBindings(client, element);

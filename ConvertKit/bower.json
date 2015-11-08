@@ -22,6 +22,9 @@
     "blueimp-md5": "~1.1.1",
     "moment": "~2.10.6",
     "YeahToast": "https://github.com/Tboda/YeahToast.git",
-    "winjs-grid": "~0.9.0"
+    "winjs-grid": "~0.9.0",
+    "fontawesome": "~4.4.0",
+    "icomoon": "~0.1.0",
+    "etlinefont-bower": "~1.0.1"
   }
 }

@@ -87,5 +87,35 @@ var ConvertKit;
         return SubscriberService;
     })(_Service);
     ConvertKit.SubscriberService = SubscriberService;
+    /**
+    A service for interacting with ConvertKit forms.
+    */
+    var FormService = (function (_super) {
+        __extends(FormService, _super);
+        function FormService(secretKey) {
+            var _this = this;
+            _super.call(this, secretKey);
+            /**
+            Retrieves a list of the user's ConvertKit forms.
+            */
+            this.GetAsync = function (page) {
+                if (page === void 0) { page = 1; }
+                return new WinJS.Promise(function (resolve, reject) {
+                    var message = _this.CreateRequest(Windows.Web.Http.HttpMethod.get, "forms");
+                    var req = _this._Client.sendRequestAsync(message);
+                    req.done(function (resp) {
+                        if (resp.isSuccessStatusCode === false) {
+                            reject("Response for FormService.GetAsync did not indicate success. Status code: " + resp.statusCode + ".");
+                            return;
+                        }
+                        ;
+                        resolve(JSON.parse(resp.content.toString()));
+                    }, reject);
+                });
+            };
+        }
+        return FormService;
+    })(_Service);
+    ConvertKit.FormService = FormService;
 })(ConvertKit || (ConvertKit = {}));
 //# sourceMappingURL=ConvertKit.js.map

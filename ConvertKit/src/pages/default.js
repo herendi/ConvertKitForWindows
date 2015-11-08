@@ -145,10 +145,18 @@ var App;
         A boolean that switches the app to debug mode, no longer requiring a secret key.
         */
         Main.Debug = false;
+        /**
+        A static and magical object that persists controller states when navigating. Better than WinJS.navigation.state, which only works when using .back or .forward.
+        */
+        Main.State = {};
+        /**
+        Starts the application
+        */
         Main.Start = function () {
             var app = WinJS.Application;
             var activation = Windows.ApplicationModel.Activation;
             app.onactivated = function (args) {
+                var _this = this;
                 var view = Windows.UI.ViewManagement.ApplicationView.getForCurrentView();
                 var titleBar = view.titleBar;
                 //Set the app's title bar colors
@@ -163,6 +171,7 @@ var App;
                 titleBar.buttonInactiveForegroundColor = Windows.UI.Colors.white;
                 //Define pages
                 App.HomeController.DefinePage();
+                App.FormsController.DefinePage();
                 App.LoginController.DefinePage();
                 App.SettingsController.DefinePage();
                 if (args.detail.kind === activation.ActivationKind.launch) {
@@ -176,6 +185,13 @@ var App;
                     //Process UI and navigate to the proper page.
                     var appFinalizationPromise = WinJS.UI.processAll()
                         .then(function () { return Main.CreateTimerTask(Main.NotificationSettings.ToUnobservable()); })
+                        .then(function () {
+                        return new WinJS.Promise(function (res, rej) {
+                            //Apply page-level bindings to app. Will not trump view-specific bindings thanks to the custom stopBinding binding.
+                            ko.applyBindings(_this);
+                            res();
+                        });
+                    })
                         .then(function () {
                         //Check if the user has entered their API key
                         if (App.Utils.LocalStorage.Retrieve(App.Main.SecretStorageKey) || Main.Debug) {
@@ -193,6 +209,28 @@ var App;
                 // If you need to complete an asynchronous operation before your application is suspended, call args.setPromise().
             };
             app.start();
+        };
+        Main.CurrentPage = ko.observable();
+        Main.HandleNavigateToSubscribers = function (context, event) {
+            if (Main.CurrentPage() !== App.HomeController.PageId) {
+                WinJS.Navigation.navigate("ms-appx:///src/pages/home/home.html");
+            }
+            ;
+        };
+        Main.HandleNavigateToForms = function (context, event) {
+            if (Main.CurrentPage() !== App.FormsController.PageId) {
+                WinJS.Navigation.navigate("ms-appx:///src/pages/forms/forms.html");
+            }
+            ;
+        };
+        /**
+        Navigates the user to the settings page.
+        */
+        Main.HandleNavigateToSettings = function (context, event) {
+            if (Main.CurrentPage() !== App.SettingsController.PageId) {
+                WinJS.Navigation.navigate("ms-appx:///src/pages/settings/settings.html");
+            }
+            ;
         };
         return Main;
     })();

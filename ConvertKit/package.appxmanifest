@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Package xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10" xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest" xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10" IgnorableNamespaces="uap mp">
-  <Identity Name="8d5e151b-e2da-40d0-913f-40c047ec1c2c" Version="1.0.0.0" Publisher="CN=Joshua" />
+  <Identity Name="8d5e151b-e2da-40d0-913f-40c047ec1c2c" Version="1.0.0.0" Publisher="CN=Josh" />
   <mp:PhoneIdentity PhoneProductId="8d5e151b-e2da-40d0-913f-40c047ec1c2c" PhonePublisherId="00000000-0000-0000-0000-000000000000" />
   <Properties>
     <DisplayName>ConvertKit</DisplayName>
@@ -31,6 +31,10 @@
           </BackgroundTasks>
         </Extension>
       </Extensions>
+      <uap:ApplicationContentUriRules>
+        <uap:Rule Match="https://api.convertkit.com" Type="include" WindowsRuntimeAccess="none" />
+        <uap:Rule Match="https://app.convertkit.com" Type="include" WindowsRuntimeAccess="none" />
+      </uap:ApplicationContentUriRules>
     </Application>
   </Applications>
   <Capabilities>

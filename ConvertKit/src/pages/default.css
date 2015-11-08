@@ -14,6 +14,12 @@ header#appHeader {
 section {
   height: 100%;
 }
+section > section {
+  margin-left: -15px;
+  margin-right: -15px;
+  padding-left: 15px;
+  padding-right: 15px;
+}
 section.ms-grid {
   width: 100%;
   padding-left: 5%;
@@ -106,6 +112,42 @@ progress.loading {
 progress.left {
   margin: 0;
 }
+/*#region WinJS SplitView */
+.win-splitview {
+  height: calc(100% - ( 1.5rem  +  1.5rem + 38px /*Height of the header itself.*/ ));
+}
+.win-splitview .win-splitview-pane {
+  background-color: #015d90;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  -ms-flex-direction: column;
+  -webkit-flex-direction: column;
+  flex-direction: column;
+}
+.win-splitview .win-splitview-pane.hide {
+  display: none;
+}
+.win-splitview .win-splitview-pane .win-splitviewcommand .win-splitviewcommand-button {
+  color: rgba(255, 255, 255, 0.7);
+}
+.win-splitview .win-splitview-pane .win-splitviewcommand .win-splitviewcommand-button:hover {
+  background-color: rgba(0, 0, 0, 0.2);
+  color: #fff;
+}
+.win-splitview .win-splitview-pane .win-splitviewcommand.active .win-splitviewcommand-button {
+  background-color: rgba(0, 0, 0, 0.2);
+  color: #fff;
+}
+.win-splitview .win-splitview-pane .win-splitviewcommand:last-child {
+  -ms-flex: 1;
+  -webkit-flex: 1;
+  flex: 1;
+}
+.win-splitview .win-splitview-pane .win-splitviewcommand:last-child .win-splitviewcommand-button {
+  align-self: flex-end;
+}
+/*#endregion */
 /*#region WinJS AppBar*/
 .win-commandingsurface .win-commandingsurface-actionarea {
   background-color: #015d90;

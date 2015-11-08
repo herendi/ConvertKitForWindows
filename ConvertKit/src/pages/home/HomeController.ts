@@ -25,7 +25,7 @@
 
         public SubscriberList = ko.observable<ConvertKit.Entities.SubscriberList>((<any>{}));
 
-        public IsLoading = ko.observable(false);
+        public IsLoading = ko.observable(true);
 
         //#endregion        
 
@@ -95,7 +95,7 @@
         Attaches or reattaches certain event listeners when the controller is constructed or reattached from the WinJS.Navigation.state.
         */
         public Prepare = () =>
-        {
+        {   
             //Listen for navigations away from this page
             WinJS.Navigation.onbeforenavigate = this.HandleNavigateAway;
         };
@@ -106,8 +106,8 @@
         */
         public HandleNavigateAway = (event) =>
         {
-            //Extend the nav state to store the current sub list
-            WinJS.Navigation.state = _.extend({}, WinJS.Navigation.state, { SubscriberList: this.SubscriberList(), HomeController: this });
+            //Persist the current controller
+            App.Main.State.HomeController = this;
 
             //Remove this event listener until the controller is reattached.
             WinJS.Navigation.onbeforenavigate = null;
@@ -149,6 +149,14 @@
         //#endregion
 
         /**
+        The page's id.
+        */
+        static get PageId()
+        {
+            return "Home";
+        };
+
+        /**
         Defines the controller's WinJS navigation functions.
         */
         static DefinePage()
@@ -167,17 +175,20 @@
                     var client: HomeController;
 
                     //A previous version of the HomeController may still be attached to the WinJS state.
-                    if (WinJS.Navigation.state && WinJS.Navigation.state.HomeController)
+                    if (App.Main.State.HomeController)
                     {
-                        client = WinJS.Navigation.state.HomeController
+                        client = App.Main.State.HomeController;
 
                         //Reattach event listeners, chiefly WinJS nav listeners that detach when navigating away.
                         client.Prepare();
                     }
                     else
                     {
-                        client = new HomeController(options || WinJS.Navigation.state)
+                        client = new HomeController(options)
                     }
+
+                    //Track the current page
+                    App.Main.CurrentPage(HomeController.PageId);
                     
                     //Define the 'client' namespace, which makes this controller available to the JS console debugger.
                     WinJS.Namespace.define("client", client);

@@ -89,4 +89,39 @@
             });
         };
     }
+
+    /**
+    A service for interacting with ConvertKit forms.
+    */
+    export class FormService extends _Service
+    {
+        constructor(secretKey)
+        {
+            super(secretKey);
+        }
+
+        /**
+        Retrieves a list of the user's ConvertKit forms.
+        */
+        public GetAsync = (page: number = 1) =>
+        {
+            return new WinJS.Promise<Entities.FormResponse>((resolve, reject) =>
+            {
+                var message = this.CreateRequest(Windows.Web.Http.HttpMethod.get, "forms");
+                var req = this._Client.sendRequestAsync(message);
+
+                req.done((resp) =>
+                {
+                    if (resp.isSuccessStatusCode === false)
+                    {
+                        reject(`Response for FormService.GetAsync did not indicate success. Status code: ${resp.statusCode}.`);
+
+                        return;
+                    };
+
+                    resolve(JSON.parse(resp.content.toString()));
+                }, reject);
+            });
+        };
+    }
 }

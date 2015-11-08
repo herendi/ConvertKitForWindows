@@ -14,5 +14,9 @@
   {
     "outputFile": "src/pages/settings/Settings.css",
     "inputFile": "src/pages/settings/Settings.less"
+  },
+  {
+    "outputFile": "src/pages/forms/forms.css",
+    "inputFile": "src/pages/forms/forms.less"
   }
 ]

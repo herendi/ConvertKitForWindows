@@ -54,6 +54,75 @@
             created_at: Date;
         }
 
+        /**
+        Represents the response returned by ConvertKit.FormService.GetAsync.
+        */
+        export interface FormResponse
+        {
+            forms: Form[];
+        }
+
+        /**
+        Represents a ConvertKit form.
+        */
+        export interface Form
+        {
+            /**
+            The date the form was created.
+            */
+            created_at: Date
+
+            /**
+            The form's description.
+            */
+            description: string;
+
+            /**
+            The form's JS URL.
+            */
+            embed_js: string;
+
+            /**
+            The form's embedded URL.
+            */
+            embed_url: string;
+
+            /**
+            The form's id.
+            */
+            id: number;
+
+            /**
+            The form's name.
+            */
+            name: string;
+
+            /**
+            The form's signup button text.
+            */
+            sign_up_button_text: string;
+
+            /**
+            The form's success message.
+            */
+            success_message: string;
+
+            /**
+            The form's title.
+            */
+            title: string;
+
+            /**
+            The form's type. Valid values are: 'embed', 'hosted', ...
+            */
+            type: string;
+
+            /**
+            The form's URL.
+            */
+            url: string;
+        }
+
         export interface DefaultResultFields
         {
             /**

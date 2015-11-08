@@ -89,6 +89,14 @@ module App
         //#endregion
 
         /**
+        The page's id.
+        */
+        static get PageId()
+        {
+            return "Login";
+        };
+
+        /**
         Defines the controller's WinJS navigation functions.
         */
         static DefinePage()
@@ -105,6 +113,9 @@ module App
                 ready: (element, options) =>
                 {
                     var client = new LoginController();
+
+                    //Track the current page
+                    App.Main.CurrentPage(LoginController.PageId);
 
                     //Define the 'client' namespace, which makes this controller available to the JS console debugger.
                     WinJS.Namespace.define("client", client);

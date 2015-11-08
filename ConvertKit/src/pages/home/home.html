@@ -6,7 +6,7 @@
     <link href="home.css" rel="stylesheet" />
 </head>
 <body>
-    <section role="main" class="home page-section with-appbar with-title ms-grid">
+    <section role="main" class="home page-section with-title ms-grid">
         <progress class="loading" style="display:none;" data-bind="visible: IsLoading() === true"></progress>
         <h4 class="win-type-title title">
             Latest 250 Subscribers
@@ -35,13 +35,5 @@
             <!-- /ko -->
         </section>
     </section>
-    <!--#region AppBar -->
-    <div style="display:none; " data-bind="winAppBar: { onAfterUpdate: HandleAppBarUpdate}">
-        <button title="Settings"
-                data-bind="winAppBarCommand: {id: 'settings', label: 'Settings', icon: 'settings', section: 'secondary', onclick: HandleNavigateToSettingsEvent}"></button>
-        <button title="Refresh"
-                data-bind="winAppBarCommand: {id: 'reload', label: 'Refresh', icon: 'refresh', onclick: HandleRefreshEvent}"></button>
-    </div>
-    <!--#endregion -->
 </body>
 </html>

@@ -6,10 +6,7 @@ module App
     {
         constructor()
         {
-            //Show and listen to the back button.
-            this.NavManager = Windows.UI.Core.SystemNavigationManager.getForCurrentView();
-            this.NavManager.appViewBackButtonVisibility = Windows.UI.Core.AppViewBackButtonVisibility.visible;
-            this.NavManager.onbackrequested = this.HandleBackEvent;
+            this.Prepare();
 
             //Grab the app settings and populate the notifications values
             this.Notifications.Enabled(Main.NotificationSettings.Enabled());
@@ -93,14 +90,27 @@ module App
 
         //#region Page event handlers
 
-        public HandleBackEvent = (event) =>
-        {
-            //Hide the back button and remove the listener.
-            this.NavManager.appViewBackButtonVisibility = Windows.UI.Core.AppViewBackButtonVisibility.collapsed;
-            this.NavManager.onbackrequested = null;
+        /**
+        Attaches or reattaches certain event listeners when the controller is constructed or reattached from the WinJS.Navigation.state.
+        */
+        public Prepare = () =>
+        {   
+            //Listen for navigations away from this page
+            WinJS.Navigation.onbeforenavigate = this.HandleNavigateAway;
+        };
 
-            //WinJS handles the back button navigation itself, no need to do it here.
-        }
+        /**
+        Stores the controller itself in WinJS.Navigation.state when navigating away, which lets us 
+        reattach when coming back, rather than recreating the controller.
+        */
+        public HandleNavigateAway = (event) =>
+        {
+            //Persist the current controller
+            App.Main.State.SettingsController = this;
+
+            //Remove this event listener until the controller is reattached.
+            WinJS.Navigation.onbeforenavigate = null;
+        };
 
         /**
         Handles signing out, which deletes the user's ConvertKit secret key from storage.
@@ -112,10 +122,16 @@ module App
                 Utils.LocalStorage.Delete(Main.SecretStorageKey);
 
                 //Send the user back to the login page.
-                WinJS.Navigation.navigate("ms-appx:///src/pages/login/login.html", () =>
+                WinJS.Navigation.navigate("ms-appx:///src/pages/login/login.html").done(() =>
                 {
                     //Erase the back stack
                     WinJS.Navigation.history = [];
+
+                    //Destroy any persisted controllers, which retain secret keys and subscriber data.
+                    App.Main.State.FormsController = null;
+                    App.Main.State.HomeController = null;
+                    App.Main.State.LoginController = null;
+                    App.Main.State.SettingsController = null;
                 });
             });
 
@@ -128,6 +144,14 @@ module App
         };
 
         //#endregion
+
+        /**
+        The page's id.
+        */
+        static get PageId()
+        {
+            return "Settings";
+        };
 
         /**
         Defines the controller's WinJS navigation functions.
@@ -146,6 +170,22 @@ module App
                 ready: (element, options) =>
                 {
                     var client = new SettingsController();
+
+                    //A previous version of the SettingsController may still be attached to the WinJS state.
+                    if (App.Main.State.SettingsController)
+                    {
+                        client = App.Main.State.SettingsController
+
+                        //Reattach event listeners, chiefly WinJS nav listeners that detach when navigating away.
+                        client.Prepare();
+                    }
+                    else
+                    {
+                        client = new SettingsController()
+                    }
+
+                    //Track the current page
+                    App.Main.CurrentPage(SettingsController.PageId);
 
                     //Define the 'client' namespace, which makes this controller available to the JS console debugger.
                     WinJS.Namespace.define("client", client);

@@ -1,0 +1,40 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Forms Page</title>
+
+    <link href="forms.css" rel="stylesheet" />
+</head>
+<body>
+    <section role="main" class="forms page-section with-title ms-grid">
+        <progress class="loading" style="display:none;" data-bind="visible: IsLoading() === true"></progress>
+        <h4 class="win-type-title title">
+            Forms and Landing Pages
+            <span class="pull-right" data-bind="text: Forms().length + ' Total'"></span>
+        </h4>
+        <section class="forms" id="forms-container" style="display:none;" data-bind="visible: IsLoading() === false">
+            <div class="ms-row" data-bind="foreach: Forms">
+                <div class="col-1-2 ">
+                    <div class="form">
+                        <div class="title">
+                            <i class="icon" data-bind="css: { 'icon-browser': type === 'embed', 'icon-document': type === 'hosted' }"></i>
+                            <h4 class="win-h4" data-bind="text: name"></h4>
+                        </div>
+                        <div class="incentive">
+                            <span>Incentive</span>
+                            <p class="win-type-body description" data-bind="text: title"></p>
+                        </div>
+                        <div class="action">
+                            <a href="#"
+                               target="_blank"
+                               class="win-button"
+                               data-bind="attr: { href: url }">Open in browser</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div style="clear:both;"></div>
+        </section>
+    </section>
+</body>
+</html>

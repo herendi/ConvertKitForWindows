@@ -1,0 +1,78 @@
+﻿#contenthost {
+    background-color: #eee;
+}
+
+section.forms {
+    background-color: #eee;
+
+    .forms {
+        overflow: hidden;
+        overflow-y: auto;
+
+        .form {
+            border:1px solid #ccc;
+            background:#f7f7f7;
+            margin-bottom:2rem;
+
+            .title {
+                padding:1rem;
+                display:flex;
+                align-items:center;
+                margin:0;
+                border-bottom:1px solid #ccc;
+
+                .icon {
+                    color: #0088cc;
+                    font-size: 2rem;
+                    margin-right:1rem;
+                }
+            }
+
+            .incentive{
+                padding:1rem;
+
+                >span{
+                    font-size:13px;
+                    text-transform:uppercase;
+                    color:#999;
+                }
+
+                >p{
+                    min-height:40px;
+                }
+            }
+
+            .action{
+                padding:1.5rem;
+                text-align:center;
+                border-top:1px solid #ccc;
+
+                >a{
+                    text-decoration:none;
+                }
+            }
+
+            p.win-type-body {
+                margin: .5rem 0;
+            }
+
+            p.state {
+                text-transform: capitalize;
+            }
+
+            hr {
+                border: none;
+                border-bottom: 1px solid #ccc;
+                margin: 1rem 0;
+                width: 100%;
+            }
+
+            :last-child hr {
+            }
+        }
+    }
+
+    .subscribers .subscriber:last-child hr {
+        display: none;
+    }
+}
