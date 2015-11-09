@@ -4,7 +4,7 @@ var App;
         function HomeController(state) {
             var _this = this;
             //#region Variables
-            this.Service = new ConvertKit.SubscriberService(App.Utils.LocalStorage.Retrieve(App.Main.SecretStorageKey));
+            this.Service = new ConvertKit.SubscriberService(App.Utils.LocalStorage.Retrieve(App.Strings.SecretStorageKey));
             this.SubscriberList = ko.observable({});
             this.IsLoading = ko.observable(true);
             this.HandleLoadSuccess = function (response) {

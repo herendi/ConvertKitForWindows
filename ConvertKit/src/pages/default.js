@@ -10,14 +10,14 @@ var App;
             */
             get: function () {
                 if (!Main._NotificationSettings) {
-                    var settings = JSON.parse(App.Utils.LocalStorage.Retrieve(Main.NotificationSettingsKey) || "{}");
+                    var settings = JSON.parse(App.Utils.LocalStorage.Retrieve(App.Strings.NotificationSettingsKey) || "{}");
                     //Set default settings if they don't exist.
                     if (_.isEmpty(settings)) {
                         settings = {
                             Enabled: true,
                             Timer: 60,
                         };
-                        App.Utils.LocalStorage.Save(Main.NotificationSettingsKey, JSON.stringify(settings));
+                        App.Utils.LocalStorage.Save(App.Strings.NotificationSettingsKey, JSON.stringify(settings));
                     }
                     ;
                     Main._NotificationSettings = {
@@ -36,14 +36,14 @@ var App;
                             Enabled: newValue,
                             Timer: Main._NotificationSettings.Timer()
                         };
-                        App.Utils.LocalStorage.Save(Main.NotificationSettingsKey, JSON.stringify(saved));
+                        App.Utils.LocalStorage.Save(App.Strings.NotificationSettingsKey, JSON.stringify(saved));
                     });
                     Main._NotificationSettings.Timer.subscribe(function (newValue) {
                         var saved = {
                             Enabled: Main._NotificationSettings.Enabled(),
                             Timer: newValue,
                         };
-                        App.Utils.LocalStorage.Save(Main.NotificationSettingsKey, JSON.stringify(saved));
+                        App.Utils.LocalStorage.Save(App.Strings.NotificationSettingsKey, JSON.stringify(saved));
                     });
                 }
                 return Main._NotificationSettings;
@@ -80,7 +80,7 @@ var App;
                 var versionMismatch = App.Utils.LocalStorage.Retrieve(storageKey) !== appVersion;
                 //Save latest app version
                 App.Utils.LocalStorage.Save(storageKey, appVersion);
-                if (settings.Enabled && !Main.GetTask(Main.TaskName)) {
+                if (settings.Enabled && !Main.GetTask(App.Strings.TaskName)) {
                     var handleDenied = function () {
                         var message = "Something went wrong and we could not gain access to background tasks. Please try again.";
                         // Display an error to the user telling them the app cannot give notifications. Only show this error once per app version.
@@ -104,7 +104,7 @@ var App;
                         var builder = new background.BackgroundTaskBuilder();
                         var timeTrigger = new background.TimeTrigger(settings.Timer, false);
                         var conditionTrigger = new background.SystemTrigger(background.SystemTriggerType.internetAvailable, false);
-                        builder.name = Main.TaskName;
+                        builder.name = App.Strings.TaskName;
                         builder.taskEntryPoint = "src\\libraries\\custom\\Tasks\\TimerTask.js";
                         builder.setTrigger(conditionTrigger);
                         builder.setTrigger(timeTrigger);
@@ -124,23 +124,11 @@ var App;
         Destroys the background timer task.
         */
         Main.DestroyTimerTask = function () {
-            var task = Main.GetTask(Main.TaskName);
+            var task = Main.GetTask(App.Strings.TaskName);
             if (task) {
                 task.unregister(true);
             }
         };
-        /**
-        A static string used as the app's background task name.
-        */
-        Main.TaskName = "backgroundSourceCheckTask";
-        /**
-        A static string used as the storage key to save and retrieve the user's Secret Key.
-        */
-        Main.SecretStorageKey = "CK-Secret-Key";
-        /**
-        A static string used as the storage key to retrieve the app's notification settings.
-        */
-        Main.NotificationSettingsKey = "CK-Notification-Settings";
         /**
         A boolean that switches the app to debug mode, no longer requiring a secret key.
         */
@@ -194,7 +182,7 @@ var App;
                     })
                         .then(function () {
                         //Check if the user has entered their API key
-                        if (App.Utils.LocalStorage.Retrieve(App.Main.SecretStorageKey) || Main.Debug) {
+                        if (App.Utils.LocalStorage.Retrieve(App.Strings.SecretStorageKey) || Main.Debug) {
                             return WinJS.Navigation.navigate(WinJS.Navigation.location || "ms-appx:///src/pages/home/home.html", WinJS.Navigation.state);
                         }
                         return WinJS.Navigation.navigate("ms-appx:///src/pages/login/login.html", WinJS.Navigation.state);

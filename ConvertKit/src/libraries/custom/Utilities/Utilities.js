@@ -1,5 +1,23 @@
 var App;
 (function (App) {
+    var Strings = (function () {
+        function Strings() {
+        }
+        /**
+        A static string used as the app's background task name.
+        */
+        Strings.TaskName = "backgroundSourceCheckTask";
+        /**
+        A static string used as the storage key to save and retrieve the user's Secret Key.
+        */
+        Strings.SecretStorageKey = "CK-Secret-Key";
+        /**
+        A static string used as the storage key to retrieve the app's notification settings.
+        */
+        Strings.NotificationSettingsKey = "CK-Notification-Settings";
+        return Strings;
+    })();
+    App.Strings = Strings;
     var Utils = (function () {
         function Utils() {
         }

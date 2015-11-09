@@ -45,7 +45,7 @@ module App
                 //Save latest app version
                 App.Utils.LocalStorage.Save(storageKey, appVersion);
 
-                if (settings.Enabled && !Main.GetTask(Main.TaskName))
+                if (settings.Enabled && !Main.GetTask(Strings.TaskName))
                 {
                     var handleDenied = () =>
                     {
@@ -83,7 +83,7 @@ module App
                         var timeTrigger = new background.TimeTrigger(settings.Timer, false);
                         var conditionTrigger = new background.SystemTrigger(background.SystemTriggerType.internetAvailable, false);
 
-                        builder.name = Main.TaskName;
+                        builder.name = Strings.TaskName;
                         builder.taskEntryPoint = "src\\libraries\\custom\\Tasks\\TimerTask.js";
                         builder.setTrigger(conditionTrigger);
                         builder.setTrigger(timeTrigger);
@@ -111,7 +111,7 @@ module App
         */
         static DestroyTimerTask = () =>
         {
-            var task = Main.GetTask(Main.TaskName);
+            var task = Main.GetTask(Strings.TaskName);
 
             if (task)
             {
@@ -120,27 +120,12 @@ module App
         };
 
         /**
-        A static string used as the app's background task name.
-        */
-        static TaskName = "backgroundSourceCheckTask";
-
-        /**
-        A static string used as the storage key to save and retrieve the user's Secret Key.
-        */
-        static SecretStorageKey = "CK-Secret-Key";
-
-        /**
-        A static string used as the storage key to retrieve the app's notification settings.
-        */
-        static NotificationSettingsKey = "CK-Notification-Settings";
-
-        /**
         A boolean that switches the app to debug mode, no longer requiring a secret key.
         */
         static Debug = false;
 
         /**
-        A private, static object used as the getter for Main.NotificationSettings.
+        A private, static object used as the getter for Strings.NotificationSettings.
         */
         private static _NotificationSettings: App.Entities.ObservableNotificationSettings;
 
@@ -151,7 +136,7 @@ module App
         {
             if (!Main._NotificationSettings)
             {
-                var settings: Entities.NotificationSettings = JSON.parse(Utils.LocalStorage.Retrieve(Main.NotificationSettingsKey) || "{}");
+                var settings: Entities.NotificationSettings = JSON.parse(Utils.LocalStorage.Retrieve(Strings.NotificationSettingsKey) || "{}");
 
                 //Set default settings if they don't exist.
                 if (_.isEmpty(settings))
@@ -161,7 +146,7 @@ module App
                         Timer: 60,
                     };
 
-                    Utils.LocalStorage.Save(Main.NotificationSettingsKey, JSON.stringify(settings));
+                    Utils.LocalStorage.Save(Strings.NotificationSettingsKey, JSON.stringify(settings));
                 };
 
                 Main._NotificationSettings = {
@@ -184,7 +169,7 @@ module App
                         Timer: Main._NotificationSettings.Timer()
                     };
 
-                    Utils.LocalStorage.Save(Main.NotificationSettingsKey, JSON.stringify(saved));
+                    Utils.LocalStorage.Save(Strings.NotificationSettingsKey, JSON.stringify(saved));
                 });
 
                 Main._NotificationSettings.Timer.subscribe((newValue) =>
@@ -194,7 +179,7 @@ module App
                         Timer: newValue,
                     };
 
-                    Utils.LocalStorage.Save(Main.NotificationSettingsKey, JSON.stringify(saved));
+                    Utils.LocalStorage.Save(Strings.NotificationSettingsKey, JSON.stringify(saved));
                 });
             }
 
@@ -274,7 +259,7 @@ module App
                         .then(() =>
                         {
                             //Check if the user has entered their API key
-                            if (Utils.LocalStorage.Retrieve(App.Main.SecretStorageKey) || Main.Debug)
+                            if (Utils.LocalStorage.Retrieve(App.Strings.SecretStorageKey) || Main.Debug)
                             {
                                 return WinJS.Navigation.navigate(WinJS.Navigation.location || "ms-appx:///src/pages/home/home.html", WinJS.Navigation.state);
                             }

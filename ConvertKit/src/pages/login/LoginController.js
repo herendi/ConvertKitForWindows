@@ -30,7 +30,7 @@ var App;
                 var getSubs = _this.Service.GetAsync();
                 var success = function (resp) {
                     //Save the key in localstorage
-                    App.Utils.LocalStorage.Save(App.Main.SecretStorageKey, _this.SecretKey());
+                    App.Utils.LocalStorage.Save(App.Strings.SecretStorageKey, _this.SecretKey());
                     //Navigate to home page, passing along the subscriber list
                     WinJS.Navigation.navigate("ms-appx:///src/pages/home/home.html", { SubscriberList: resp });
                 };

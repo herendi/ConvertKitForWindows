@@ -37,7 +37,7 @@ var App;
             */
             this.HandleSignoutEvent = function (context, event) {
                 var confirmCommand = new Windows.UI.Popups.UICommand("Sign out", function (command) {
-                    App.Utils.LocalStorage.Delete(App.Main.SecretStorageKey);
+                    App.Utils.LocalStorage.Delete(App.Strings.SecretStorageKey);
                     //Send the user back to the login page.
                     WinJS.Navigation.navigate("ms-appx:///src/pages/login/login.html").done(function () {
                         //Erase the back stack

@@ -19,8 +19,7 @@ module App
                 "ms-appx:///src/libraries/yeahtoast/yeahtoast.js",
                 "ms-appx:///src/libraries/lodash/lodash.min.js",
                 "ms-appx:///src/libraries/custom/convertkit/convertkit.js",
-                "ms-appx:///src/libraries/custom/Utilities/Utilities.js",
-                "ms-appx:///src/pages/default.js",
+                "ms-appx:///src/libraries/custom/Utilities/Utilities.js"
             ];
 
             for (var i = 0; i < scripts.length; i++)
@@ -31,8 +30,8 @@ module App
 
         static GetSubscriberCount = () =>
         {
-            var settings: Entities.NotificationSettings = JSON.parse(Utils.LocalStorage.Retrieve(Main.NotificationSettingsKey) || "{}");
-            var key = Utils.LocalStorage.Retrieve(Main.SecretStorageKey);
+            var settings: Entities.NotificationSettings = JSON.parse(Utils.LocalStorage.Retrieve(Strings.NotificationSettingsKey) || "{}");
+            var key = Utils.LocalStorage.Retrieve(Strings.SecretStorageKey);
 
             if (!key || !settings || !settings.Enabled)
             {

@@ -19,7 +19,7 @@
 
         //#region Variables
 
-        private Service = new ConvertKit.SubscriberService(Utils.LocalStorage.Retrieve(Main.SecretStorageKey));
+        private Service = new ConvertKit.SubscriberService(Utils.LocalStorage.Retrieve(Strings.SecretStorageKey));
 
         private KeyboardRect: Windows.Foundation.Rect;
 

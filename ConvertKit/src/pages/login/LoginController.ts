@@ -69,7 +69,7 @@ module App
             var success = (resp: ConvertKit.Entities.SubscriberList) =>
             {
                 //Save the key in localstorage
-                App.Utils.LocalStorage.Save(App.Main.SecretStorageKey, this.SecretKey());
+                App.Utils.LocalStorage.Save(Strings.SecretStorageKey, this.SecretKey());
 
                 //Navigate to home page, passing along the subscriber list
                 WinJS.Navigation.navigate("ms-appx:///src/pages/home/home.html", { SubscriberList: resp });

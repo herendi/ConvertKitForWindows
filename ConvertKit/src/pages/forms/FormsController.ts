@@ -19,7 +19,7 @@
 
         //#region Variables
 
-        private Service = new ConvertKit.FormService(Utils.LocalStorage.Retrieve(Main.SecretStorageKey));
+        private Service = new ConvertKit.FormService(Utils.LocalStorage.Retrieve(Strings.SecretStorageKey));
 
         public IsLoading = ko.observable(true);
 

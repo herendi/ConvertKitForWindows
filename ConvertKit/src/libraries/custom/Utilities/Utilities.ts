@@ -1,5 +1,23 @@
 ﻿module App
 {
+    export class Strings
+    {
+        /**
+        A static string used as the app's background task name.
+        */
+        static TaskName = "backgroundSourceCheckTask";
+
+        /**
+        A static string used as the storage key to save and retrieve the user's Secret Key.
+        */
+        static SecretStorageKey = "CK-Secret-Key";
+
+        /**
+        A static string used as the storage key to retrieve the app's notification settings.
+        */
+        static NotificationSettingsKey = "CK-Notification-Settings";
+    }
+
     export class Utils
     {
         //#region Storage 

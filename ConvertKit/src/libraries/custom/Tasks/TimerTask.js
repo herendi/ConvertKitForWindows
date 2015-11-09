@@ -14,8 +14,7 @@ var App;
                 "ms-appx:///src/libraries/yeahtoast/yeahtoast.js",
                 "ms-appx:///src/libraries/lodash/lodash.min.js",
                 "ms-appx:///src/libraries/custom/convertkit/convertkit.js",
-                "ms-appx:///src/libraries/custom/Utilities/Utilities.js",
-                "ms-appx:///src/pages/default.js",
+                "ms-appx:///src/libraries/custom/Utilities/Utilities.js"
             ];
             for (var i = 0; i < scripts.length; i++) {
                 importScripts(scripts[i]);
@@ -23,8 +22,8 @@ var App;
             ;
         };
         TimerTask.GetSubscriberCount = function () {
-            var settings = JSON.parse(App.Utils.LocalStorage.Retrieve(App.Main.NotificationSettingsKey) || "{}");
-            var key = App.Utils.LocalStorage.Retrieve(App.Main.SecretStorageKey);
+            var settings = JSON.parse(App.Utils.LocalStorage.Retrieve(App.Strings.NotificationSettingsKey) || "{}");
+            var key = App.Utils.LocalStorage.Retrieve(App.Strings.SecretStorageKey);
             if (!key || !settings || !settings.Enabled) {
                 close();
                 return;

@@ -119,7 +119,7 @@ module App
         {
             var confirmCommand = new Windows.UI.Popups.UICommand("Sign out", (command) =>
             {
-                Utils.LocalStorage.Delete(Main.SecretStorageKey);
+                Utils.LocalStorage.Delete(Strings.SecretStorageKey);
 
                 //Send the user back to the login page.
                 WinJS.Navigation.navigate("ms-appx:///src/pages/login/login.html").done(() =>

@@ -4,7 +4,7 @@ var App;
         function FormsController(state) {
             var _this = this;
             //#region Variables
-            this.Service = new ConvertKit.FormService(App.Utils.LocalStorage.Retrieve(App.Main.SecretStorageKey));
+            this.Service = new ConvertKit.FormService(App.Utils.LocalStorage.Retrieve(App.Strings.SecretStorageKey));
             this.IsLoading = ko.observable(true);
             this.Forms = ko.observableArray([]);
             this.HandleLoadSuccess = function (response) {
