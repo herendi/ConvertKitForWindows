@@ -1,4 +1,4 @@
-var App;
+﻿var App;
 (function (App) {
     var FormsController = (function () {
         function FormsController(state) {

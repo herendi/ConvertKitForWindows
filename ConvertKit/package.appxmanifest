@@ -1,10 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Package xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10" xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest" xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10" IgnorableNamespaces="uap mp">
-  <Identity Name="8d5e151b-e2da-40d0-913f-40c047ec1c2c" Version="1.0.0.0" Publisher="CN=Josh" />
+  <Identity Name="11272Kingbird.ConvertKitforWindows" Version="1.1.2.0" Publisher="CN=47958F3E-04D3-4EFC-B249-2D204C942350" />
   <mp:PhoneIdentity PhoneProductId="8d5e151b-e2da-40d0-913f-40c047ec1c2c" PhonePublisherId="00000000-0000-0000-0000-000000000000" />
   <Properties>
-    <DisplayName>ConvertKit</DisplayName>
-    <PublisherDisplayName>Joshua</PublisherDisplayName>
+    <DisplayName>ConvertKit for Windows</DisplayName>
+    <PublisherDisplayName>Nozzlegear Software</PublisherDisplayName>
     <Logo>src\images\storelogo.png</Logo>
   </Properties>
   <Dependencies>
@@ -15,7 +15,7 @@
   </Resources>
   <Applications>
     <Application Id="App" StartPage="src\pages\default.html">
-      <uap:VisualElements DisplayName="ConvertKit" Description="ConvertKit" BackgroundColor="transparent" Square150x150Logo="src\images\Square150x150Logo.png" Square44x44Logo="src\images\Square44x44Logo.png">
+      <uap:VisualElements DisplayName="ConvertKit for Windows" Description="ConvertKit" BackgroundColor="transparent" Square150x150Logo="src\images\Square150x150Logo.png" Square44x44Logo="src\images\Square44x44Logo.png">
         <uap:DefaultTile Wide310x150Logo="src\images\Wide310x150Logo.png">
           <uap:ShowNameOnTiles>
             <uap:ShowOn Tile="square150x150Logo" />

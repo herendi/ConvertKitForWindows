@@ -1,4 +1,4 @@
-/// <reference path="../../typings/tsd.d.ts" />
+﻿/// <reference path="../../typings/tsd.d.ts" />
 var App;
 (function (App) {
     var Main = (function () {

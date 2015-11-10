@@ -1,4 +1,4 @@
-.ms-grid, .ms-row, [class*="col-"] {
+﻿.ms-grid, .ms-row, [class*="col-"] {
   box-sizing: border-box; }
 
 .ms-grid {

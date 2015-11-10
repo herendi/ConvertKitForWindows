@@ -1,4 +1,4 @@
-/// <reference path="../../libraries/custom/utilities/utilities.ts" />
+﻿/// <reference path="../../libraries/custom/utilities/utilities.ts" />
 var App;
 (function (App) {
     var SettingsController = (function () {

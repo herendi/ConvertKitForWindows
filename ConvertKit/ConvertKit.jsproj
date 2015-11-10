@@ -1,5 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <TypeScriptEmitBOM>true</TypeScriptEmitBOM>
+  </PropertyGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props')" />
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|AnyCPU">
@@ -55,8 +58,10 @@
     <TargetPlatformMinVersion>10.0.10240.0</TargetPlatformMinVersion>
     <MinimumVisualStudioVersion>$(VersionNumberMajor).$(VersionNumberMinor)</MinimumVisualStudioVersion>
     <DefaultLanguage>en-US</DefaultLanguage>
-    <PackageCertificateKeyFile>ConvertKit_TemporaryKey.pfx</PackageCertificateKeyFile>
-    <PackageCertificateThumbprint>EC97D84D63577343024A076DE00655BC4FD7293F</PackageCertificateThumbprint>
+    <PackageCertificateKeyFile>ConvertKit_StoreKey.pfx</PackageCertificateKeyFile>
+    <PackageCertificateThumbprint>B63CD267848EF1E2CCBF4B292B0C731CB3573A8E</PackageCertificateThumbprint>
+    <AppxAutoIncrementPackageRevision>True</AppxAutoIncrementPackageRevision>
+    <AppxBundlePlatforms>neutral</AppxBundlePlatforms>
   </PropertyGroup>
   <ItemGroup>
     <AppxManifest Include="package.appxmanifest">
@@ -65,7 +70,8 @@
     <Content Include="bower.json" />
     <Content Include="compilerconfig.json" />
     <Content Include="compilerconfig.json.defaults" />
-    <None Include="ConvertKit_TemporaryKey.pfx" />
+    <Content Include="gruntfile.js" />
+    <Content Include="package.json" />
     <Content Include="packages.config" />
     <Content Include="src\images\ck-splash.scale-200.png" />
     <Content Include="src\images\LockScreenLogo.scale-200.png" />
@@ -205,10 +211,13 @@
        that target and the DisableFastUpToDateCheck PropertyGroup. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
-  </Target>
+  </Target>-->
   <Target Name="AfterBuild">
+    <Exec Command="echo 'Running Grunt:addBom to add Byte Order Mark to all src/library files.'" />
+    <Exec Command="grunt addBom" />
+    <Exec Command="echo 'Finished running Grunt:addBom.'" />
   </Target>
-  <PropertyGroup>
+  <!--<PropertyGroup>
     <DisableFastUpToDateCheck>true</DisableFastUpToDateCheck>
   </PropertyGroup>
   -->

@@ -1,4 +1,4 @@
-var App;
+﻿var App;
 (function (App) {
     var HomeController = (function () {
         function HomeController(state) {

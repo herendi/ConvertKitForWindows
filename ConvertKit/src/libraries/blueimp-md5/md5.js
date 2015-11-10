@@ -1,4 +1,4 @@
-/*
+﻿/*
  * JavaScript MD5 1.0.1
  * https://github.com/blueimp/JavaScript-MD5
  *

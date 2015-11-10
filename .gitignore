@@ -201,3 +201,9 @@ bower_components/
 #Build and bin folders
 bin/
 bld/
+
+# Ignore StoreAssociation files
+*.StoreAssociation.xml
+
+# Ignore Bundles
+BundleArtifacts/
