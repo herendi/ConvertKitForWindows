@@ -10,6 +10,10 @@ header#appHeader {
 #contenthost {
   height: 100%;
   position: relative;
+  background-color: #eee;
+}
+.dark-bg #contenthost {
+  background-color: #2c3748;
 }
 section {
   height: 100%;

@@ -41,14 +41,18 @@ module App
 
         public HandleLoginEvent = (context, event) =>
         {
-            if (Main.Debug)
-            {
-                WinJS.Navigation.navigate("ms-appx:///src/pages/home/home.html");
-            }
-
             if (!this.SecretKey())
             {
                 this.ShowErrorDialog("You must enter a valid API key to continue.");
+
+                return;
+            }
+
+            if (Main.Debug || this.SecretKey() === "-_DEBUG")
+            {
+                Main.Debug = true;
+
+                WinJS.Navigation.navigate("ms-appx:///src/pages/home/home.html");
 
                 return;
             }

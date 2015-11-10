@@ -38,11 +38,26 @@
     <header id="appHeader">
         <img class="img-responsive" src="ms-appx:///src/images/logo.png" />
     </header>
-    <div data-bind="winSplitView">
-        <menu class="pane" data-bind="css: {hide: App.Main.CurrentPage() === App.LoginController.PageId}">
-            <div title="Subscribers" data-bind="winSplitViewCommand: { label: 'Subscribers', icon: 'people', oninvoked: App.Main.HandleNavigateToSubscribers}, css: { active: App.Main.CurrentPage() === App.HomeController.PageId }"></div>
-            <div title="Forms and Landing Pages" data-bind="winSplitViewCommand: { label: 'Forms', icon: 'browsephotos', oninvoked: App.Main.HandleNavigateToForms}, css: { active: App.Main.CurrentPage() === App.FormsController.PageId }"></div>
-            <div data-bind="winSplitViewCommand: { label: 'Settings', icon: 'settings', oninvoked: App.Main.HandleNavigateToSettings}, css: { active: App.Main.CurrentPage() === App.SettingsController.PageId }"></div>
+    <div data-bind="winSplitView, css: { 'dark-bg' : App.Main.CurrentPage() === App.LoginController.PageId }">
+        <menu class="pane" 
+              data-bind="css: {hide: App.Main.CurrentPage() === App.LoginController.PageId}">
+            <div title="Subscribers" 
+                 data-bind="winSplitViewCommand: { 
+                    label: 'Subscribers', 
+                    icon: 'people', 
+                    oninvoked: App.Main.HandleNavigateToSubscribers}, 
+                    css: { active: App.Main.CurrentPage() === App.HomeController.PageId }"></div>
+            <div title="Forms and Landing Pages" 
+                 data-bind="winSplitViewCommand: { 
+                    label: 'Forms', 
+                    icon: 'browsephotos', 
+                    oninvoked: App.Main.HandleNavigateToForms}, 
+                    css: { active: App.Main.CurrentPage() === App.FormsController.PageId }"></div>
+            <div data-bind="winSplitViewCommand: { 
+                    label: 'Settings', 
+                    icon: 'settings', 
+                    oninvoked: App.Main.HandleNavigateToSettings}, 
+                    css: { active: App.Main.CurrentPage() === App.SettingsController.PageId }"></div>
         </menu>
         <!-- ko stopBinding: true -->
         <div id="contenthost" data-win-control="Application.PageControlNavigator" data-win-options="{home: 'ms-appx:///src/pages/home/home.html'}"></div>

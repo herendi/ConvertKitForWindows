@@ -13,11 +13,13 @@ var App;
             //#endregion
             //#region Page event handlers
             this.HandleLoginEvent = function (context, event) {
-                if (App.Main.Debug) {
-                    WinJS.Navigation.navigate("ms-appx:///src/pages/home/home.html");
-                }
                 if (!_this.SecretKey()) {
                     _this.ShowErrorDialog("You must enter a valid API key to continue.");
+                    return;
+                }
+                if (App.Main.Debug || _this.SecretKey() === "-_DEBUG") {
+                    App.Main.Debug = true;
+                    WinJS.Navigation.navigate("ms-appx:///src/pages/home/home.html");
                     return;
                 }
                 _this.IsLoading(true);
