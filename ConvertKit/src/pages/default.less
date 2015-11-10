@@ -189,15 +189,16 @@ progress {
                     color: #fff;
                 }
             }
+        }
 
-            &:last-child {
-                -ms-flex: 1;
-                -webkit-flex: 1;
-                flex: 1;
+        > #push-to-bottom {
+            -ms-flex: 1;
+            -webkit-flex: 1;
+            flex: 1;
+            display: flex;
 
-                .win-splitviewcommand-button {
-                    align-self: flex-end;
-                }
+            > div {
+                align-self:flex-end;
             }
         }
     }

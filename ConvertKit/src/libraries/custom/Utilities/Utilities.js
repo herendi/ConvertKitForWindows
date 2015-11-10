@@ -63,6 +63,9 @@ var App;
             }
         };
         //#endregion
+        /**
+        Shows a dialog with the given title and message, and optionally accepts an array of command buttons.
+        */
         Utils.ShowDialog = function (title, message, commands) {
             var dialog = new Windows.UI.Popups.MessageDialog(message, title);
             if (commands) {
@@ -70,9 +73,21 @@ var App;
             }
             dialog.showAsync();
         };
-        Utils.GetResourceValue = function (key) {
-            var resource = Windows.ApplicationModel.Resources.ResourceLoader.getForViewIndependentUse("AppSettings.private");
+        /**
+        Retrieves a resource string from the given resource file.
+        */
+        Utils.GetResourceValue = function (key, resourceFile) {
+            if (resourceFile === void 0) { resourceFile = "AppSettings.private"; }
+            var resource = Windows.ApplicationModel.Resources.ResourceLoader.getForViewIndependentUse(resourceFile);
             return resource.getString(key);
+        };
+        /**
+        Checks if the device has an internet connection. This can take several seconds to return, but executes synchronously.
+        */
+        Utils.HasInternetConnection = function () {
+            var connection = Windows.Networking.Connectivity.NetworkInformation.getInternetConnectionProfile();
+            var level = Windows.Networking.Connectivity.NetworkConnectivityLevel;
+            return connection && (connection.getNetworkConnectivityLevel() === level.internetAccess);
         };
         return Utils;
     })();

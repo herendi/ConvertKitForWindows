@@ -143,12 +143,13 @@ progress.left {
   background-color: rgba(0, 0, 0, 0.2);
   color: #fff;
 }
-.win-splitview .win-splitview-pane .win-splitviewcommand:last-child {
+.win-splitview .win-splitview-pane > #push-to-bottom {
   -ms-flex: 1;
   -webkit-flex: 1;
   flex: 1;
+  display: flex;
 }
-.win-splitview .win-splitview-pane .win-splitviewcommand:last-child .win-splitviewcommand-button {
+.win-splitview .win-splitview-pane > #push-to-bottom > div {
   align-self: flex-end;
 }
 /*#endregion */

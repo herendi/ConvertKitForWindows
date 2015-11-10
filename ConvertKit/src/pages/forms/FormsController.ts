@@ -14,16 +14,17 @@
                 return;
             };
 
-            this.Service.GetAsync().done(this.HandleLoadSuccess, this.HandleLoadFailure);
+            //Load the forms
+            this.HandleRefreshEvent();
         }
 
         //#region Variables
 
         private Service = new ConvertKit.FormService(Utils.LocalStorage.Retrieve(Strings.SecretStorageKey));
 
-        public IsLoading = ko.observable(true);
-
         public Forms = ko.observableArray<ConvertKit.Entities.Form>([]);
+
+        public IsLoading = ko.observable(false);
 
         //#endregion        
 
@@ -40,6 +41,7 @@
 
         private HandleLoadSuccess = (response: ConvertKit.Entities.FormResponse) =>
         {
+            this.Forms([]);
             this.Forms.push.apply(this.Forms, response.forms);
 
             this.IsLoading(false);
@@ -88,13 +90,22 @@
         };
 
         /**
-        Handles refreshing the list of subscribers.
+        Handles refreshing the list of forms.
         */
-        public HandleRefreshEvent = (context, event) =>
+        public HandleRefreshEvent = (context?, event?) =>
         {
             if (!this.IsLoading())
             {
                 this.IsLoading(true);
+
+                if (!Utils.HasInternetConnection())
+                {
+                    Utils.ShowDialog("No internet connection", "It looks like your device does not have an active internet connection. Please try again.");
+
+                    this.IsLoading(false);
+
+                    return;
+                }
 
                 this.Service.GetAsync().done(this.HandleLoadSuccess, this.HandleLoadFailure);
             }

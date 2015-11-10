@@ -131,6 +131,7 @@
     <Content Include="src\pages\settings\Settings.css" />
     <Content Include="src\pages\settings\settings.html" />
     <Content Include="src\pages\settings\Settings.less" />
+    <Content Include="src\pages\settings\Settings.min.css" />
     <Content Include="src\pages\settings\SettingsController.js" />
     <Content Include="src\pages\settings\SettingsController.js.map" />
     <Content Include="src\pages\variables.less" />

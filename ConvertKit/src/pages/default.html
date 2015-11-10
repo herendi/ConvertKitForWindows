@@ -53,11 +53,20 @@
                     icon: 'browsephotos', 
                     oninvoked: App.Main.HandleNavigateToForms}, 
                     css: { active: App.Main.CurrentPage() === App.FormsController.PageId }"></div>
-            <div data-bind="winSplitViewCommand: { 
-                    label: 'Settings', 
-                    icon: 'settings', 
-                    oninvoked: App.Main.HandleNavigateToSettings}, 
-                    css: { active: App.Main.CurrentPage() === App.SettingsController.PageId }"></div>
+            <div id="push-to-bottom">
+                <div>
+                    <div data-bind="winSplitViewCommand: {
+                        label: 'Reload',
+                        icon: 'refresh',
+                        oninvoked: App.Main.HandleRefreshEvent },
+                        visible: App.Main.CurrentPage() !== App.SettingsController.PageId "></div>
+                    <div data-bind="winSplitViewCommand: {
+                        label: 'Settings',
+                        icon: 'settings',
+                        oninvoked: App.Main.HandleNavigateToSettings},
+                        css: { active: App.Main.CurrentPage() === App.SettingsController.PageId }"></div>
+                </div>
+            </div>
         </menu>
         <!-- ko stopBinding: true -->
         <div id="contenthost" data-win-control="Application.PageControlNavigator" data-win-options="{home: 'ms-appx:///src/pages/home/home.html'}"></div>

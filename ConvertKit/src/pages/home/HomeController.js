@@ -6,7 +6,7 @@ var App;
             //#region Variables
             this.Service = new ConvertKit.SubscriberService(App.Utils.LocalStorage.Retrieve(App.Strings.SecretStorageKey));
             this.SubscriberList = ko.observable({});
-            this.IsLoading = ko.observable(true);
+            this.IsLoading = ko.observable(false);
             this.HandleLoadSuccess = function (response) {
                 _this.SubscriberList(response);
                 _this.IsLoading(false);
@@ -73,6 +73,11 @@ var App;
             this.HandleRefreshEvent = function (context, event) {
                 if (!_this.IsLoading()) {
                     _this.IsLoading(true);
+                    if (!App.Utils.HasInternetConnection()) {
+                        App.Utils.ShowDialog("No internet connection", "It looks like your device does not have an active internet connection. Please try again.");
+                        _this.IsLoading(false);
+                        return;
+                    }
                     _this.Service.GetAsync().done(_this.HandleLoadSuccess, _this.HandleLoadFailure);
                 }
             };
@@ -89,7 +94,8 @@ var App;
                 return;
             }
             ;
-            this.Service.GetAsync().done(this.HandleLoadSuccess, this.HandleLoadFailure);
+            //Load the subscribers
+            this.HandleRefreshEvent();
         }
         //#endregion        
         //#region Utility functions

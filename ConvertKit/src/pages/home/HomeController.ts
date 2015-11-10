@@ -14,7 +14,8 @@
                 return;
             };
 
-            this.Service.GetAsync().done(this.HandleLoadSuccess, this.HandleLoadFailure);
+            //Load the subscribers
+            this.HandleRefreshEvent();
         }
 
         //#region Variables
@@ -25,7 +26,7 @@
 
         public SubscriberList = ko.observable<ConvertKit.Entities.SubscriberList>((<any>{}));
 
-        public IsLoading = ko.observable(true);
+        public IsLoading = ko.observable(false);
 
         //#endregion        
 
@@ -128,11 +129,20 @@
         /**
         Handles refreshing the list of subscribers.
         */
-        public HandleRefreshEvent = (context, event) =>
+        public HandleRefreshEvent = (context?, event?) =>
         {
             if (!this.IsLoading())
             {
                 this.IsLoading(true);
+
+                if (!Utils.HasInternetConnection())
+                {
+                    Utils.ShowDialog("No internet connection", "It looks like your device does not have an active internet connection. Please try again.");
+
+                    this.IsLoading(false);
+
+                    return;
+                }
 
                 this.Service.GetAsync().done(this.HandleLoadSuccess, this.HandleLoadFailure);
             }

@@ -5,9 +5,10 @@ var App;
             var _this = this;
             //#region Variables
             this.Service = new ConvertKit.FormService(App.Utils.LocalStorage.Retrieve(App.Strings.SecretStorageKey));
-            this.IsLoading = ko.observable(true);
             this.Forms = ko.observableArray([]);
+            this.IsLoading = ko.observable(false);
             this.HandleLoadSuccess = function (response) {
+                _this.Forms([]);
                 _this.Forms.push.apply(_this.Forms, response.forms);
                 _this.IsLoading(false);
             };
@@ -40,11 +41,16 @@ var App;
                 WinJS.Navigation.onbeforenavigate = null;
             };
             /**
-            Handles refreshing the list of subscribers.
+            Handles refreshing the list of forms.
             */
             this.HandleRefreshEvent = function (context, event) {
                 if (!_this.IsLoading()) {
                     _this.IsLoading(true);
+                    if (!App.Utils.HasInternetConnection()) {
+                        App.Utils.ShowDialog("No internet connection", "It looks like your device does not have an active internet connection. Please try again.");
+                        _this.IsLoading(false);
+                        return;
+                    }
                     _this.Service.GetAsync().done(_this.HandleLoadSuccess, _this.HandleLoadFailure);
                 }
             };
@@ -55,7 +61,8 @@ var App;
                 return;
             }
             ;
-            this.Service.GetAsync().done(this.HandleLoadSuccess, this.HandleLoadFailure);
+            //Load the forms
+            this.HandleRefreshEvent();
         }
         //#endregion        
         //#region Utility functions

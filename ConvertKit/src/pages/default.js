@@ -212,6 +212,16 @@ var App;
             ;
         };
         /**
+        Attempts to refresh the current page by calling client.HandleRefreshEvent. It's up to the page controller
+        to make itself available via WinJS.Namespace.define("client", ...);.
+        */
+        Main.HandleRefreshEvent = function (context, event) {
+            var client = window["client"];
+            if (client && client.HandleRefreshEvent) {
+                client.HandleRefreshEvent(context, event);
+            }
+        };
+        /**
         Navigates the user to the settings page.
         */
         Main.HandleNavigateToSettings = function (context, event) {

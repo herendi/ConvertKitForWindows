@@ -79,6 +79,9 @@
 
         //#endregion
 
+        /**
+        Shows a dialog with the given title and message, and optionally accepts an array of command buttons.
+        */
         static ShowDialog = (title: string, message: string, commands?: Windows.UI.Popups.IUICommand[]) =>
         {
             var dialog = new Windows.UI.Popups.MessageDialog(message, title);
@@ -91,11 +94,25 @@
             dialog.showAsync();
         };
 
-        static GetResourceValue = (key: string) =>
+        /**
+        Retrieves a resource string from the given resource file.
+        */
+        static GetResourceValue = (key: string, resourceFile: string = "AppSettings.private") =>
         {
-            var resource: { getString: (key: string) => string } = (<any>Windows.ApplicationModel.Resources.ResourceLoader).getForViewIndependentUse("AppSettings.private");
-            
+            var resource: { getString: (key: string) => string } = (<any>Windows.ApplicationModel.Resources.ResourceLoader).getForViewIndependentUse(resourceFile);
+
             return resource.getString(key);
+        }
+
+        /**
+        Checks if the device has an internet connection. This can take several seconds to return, but executes synchronously.
+        */
+        static HasInternetConnection = () =>
+        {
+            var connection = Windows.Networking.Connectivity.NetworkInformation.getInternetConnectionProfile();
+            var level = Windows.Networking.Connectivity.NetworkConnectivityLevel;
+
+            return connection && (connection.getNetworkConnectivityLevel() === level.internetAccess);
         }
     }
 }
