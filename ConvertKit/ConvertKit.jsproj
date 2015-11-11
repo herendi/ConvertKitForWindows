@@ -58,10 +58,11 @@
     <TargetPlatformMinVersion>10.0.10240.0</TargetPlatformMinVersion>
     <MinimumVisualStudioVersion>$(VersionNumberMajor).$(VersionNumberMinor)</MinimumVisualStudioVersion>
     <DefaultLanguage>en-US</DefaultLanguage>
-    <PackageCertificateKeyFile>ConvertKit_StoreKey.pfx</PackageCertificateKeyFile>
-    <PackageCertificateThumbprint>B63CD267848EF1E2CCBF4B292B0C731CB3573A8E</PackageCertificateThumbprint>
+    <PackageCertificateThumbprint>621195EDB71D13D2EE4819A8EC4CCC196BA00405</PackageCertificateThumbprint>
     <AppxAutoIncrementPackageRevision>True</AppxAutoIncrementPackageRevision>
     <AppxBundlePlatforms>neutral</AppxBundlePlatforms>
+    <AppxBundle>Always</AppxBundle>
+    <PackageCertificateKeyFile>ConvertKit_StoreKey.pfx</PackageCertificateKeyFile>
   </PropertyGroup>
   <ItemGroup>
     <AppxManifest Include="package.appxmanifest">
@@ -84,6 +85,9 @@
     <Content Include="src\images\Square44x44Logo.targetsize-24_altform-unplated.png" />
     <Content Include="src\images\store-listing-logo.png" />
     <Content Include="src\images\storelogo.scale-100.png" />
+    <Content Include="src\images\StoreLogo.scale-125.png" />
+    <Content Include="src\images\StoreLogo.scale-150.png" />
+    <Content Include="src\images\StoreLogo.scale-200.png" />
     <Content Include="src\images\StoreLogo.scale-400.png" />
     <Content Include="src\images\Wide310x150Logo.scale-200.png" />
     <Content Include="src\libraries\blueimp-md5\md5.js" />
