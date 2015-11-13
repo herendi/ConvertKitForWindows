@@ -1,6 +1,8 @@
 ﻿section.login {
   color: #fff;
   background-color: #2c3748;
+  overflow: hidden;
+  overflow-y: auto;
 }
 section.login form.login-form {
   margin: 3rem 0 0 0;
