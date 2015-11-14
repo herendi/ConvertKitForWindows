@@ -10,7 +10,7 @@
         <progress class="loading" style="display:none;" data-bind="visible: IsLoading() === true"></progress>
         <h4 class="win-type-title title">
             Forms and Landing Pages
-            <span class="pull-right" data-bind="text: Forms().length + ' Total'"></span>
+            <span class="pull-right hide show-m" data-bind="text: Forms().length + ' Total'"></span>
         </h4>
         <section class="forms" id="forms-container" style="display:none;" data-bind="visible: IsLoading() === false">
             <div class="ms-row" data-bind="foreach: Forms">

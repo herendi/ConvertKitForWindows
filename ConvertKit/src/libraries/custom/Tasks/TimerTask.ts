@@ -55,22 +55,9 @@ module App
                     YeahToast.show({
                         title: `${resp.total_subscribers - lastTotalCount} new ConvertKit subscriber${resp.total_subscribers - lastTotalCount > 1 ? "s" : ""}.`,
                     });
-
-                    // TODO: Update livetile with total subscriber count
-                    var notifications = Windows.UI.Notifications;
-                    var template = notifications.TileTemplateType["tileWide310x150Text03"];
-                    var tileXml = notifications.TileUpdateManager.getTemplateContent(template);
-                    var tileTextAttributes = tileXml.getElementsByTagName("text");
-
-                    //Update tile text
-                    tileTextAttributes[0].appendChild(tileXml.createTextNode(`Total subscribers: ${resp.total_subscribers}.`));
-
-                    //Clear current tiles
-                    notifications.TileUpdateManager.createTileUpdaterForApplication().clear();
-
-                    //Create tile
-                    notifications.TileUpdateManager.createTileUpdaterForApplication().update(new notifications.TileNotification(tileXml));
                 };
+
+                App.Utils.LiveTiles.UpdateAllTiles(resp);
                 
                 close();
             });

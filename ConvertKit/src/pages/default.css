@@ -1,6 +1,56 @@
 ﻿body {
   background-color: #eee;
 }
+.hide {
+  display: none;
+  visibility: hidden;
+}
+.pull-right {
+  float: right;
+}
+.pull-left {
+  float: left;
+}
+.clearfix {
+  clear: both;
+}
+@media screen and (max-width: 768px) {
+  .pull-none-s {
+    float: none;
+  }
+}
+/*#region Responsive Utilities */
+@media screen and (min-width: 320px) {
+  .show-inline-xs {
+    display: inline-block;
+    visibility: visible;
+  }
+}
+@media screen and (min-width: 540px) {
+  .show-inline-s {
+    display: inline-block;
+    visibility: visible;
+  }
+}
+@media screen and (min-width: 768px) {
+  .show-inline-m {
+    display: inline-block;
+    visibility: visible;
+  }
+}
+@media screen and (min-width: 1084px) {
+  .show-inline-l {
+    display: inline-block;
+    visibility: visible;
+  }
+}
+@media screen and (min-width: 1400px) {
+  .show-inline-xl {
+    display: inline-block;
+    visibility: visible;
+  }
+}
+/*#endregion */
 header#appHeader {
   background-color: #015d90;
   text-align: center;
@@ -46,6 +96,16 @@ section .title {
   margin-bottom: 1.5rem;
   border-bottom: 1px solid #ccc;
 }
+@media screen and (max-width: 768px) {
+  section .title {
+    font-size: 1.5rem;
+  }
+}
+@media screen and (max-width: 400px) {
+  section .title {
+    font-size: 1.2rem;
+  }
+}
 .ms-row {
   margin-bottom: 1em;
 }
@@ -75,15 +135,6 @@ button.win-button.win-button-danger:hover {
 }
 .text-left {
   text-align: left;
-}
-.pull-right {
-  float: right;
-}
-.pull-left {
-  float: left;
-}
-.clearfix {
-  clear: both;
 }
 .fw {
   width: 100%;

@@ -96,6 +96,8 @@
     <Content Include="src\libraries\custom\ConvertKit\ConvertKit.js.map" />
     <Content Include="src\libraries\custom\Knockout.StopBinding\Knockout.StopBinding.js" />
     <Content Include="src\libraries\custom\Knockout.StopBinding\Knockout.StopBinding.js.map" />
+    <Content Include="src\libraries\custom\LiveTiles\LiveTiles.js" />
+    <Content Include="src\libraries\custom\LiveTiles\LiveTiles.js.map" />
     <Content Include="src\libraries\custom\navigator.js" />
     <Content Include="src\libraries\custom\Tasks\TimerTask.js" />
     <Content Include="src\libraries\custom\Tasks\TimerTask.js.map" />
@@ -172,6 +174,7 @@
     <Content Include="src\pages\default.js" />
     <Content Include="src\pages\default.js.map" />
     <TypeScriptCompile Include="src\libraries\custom\Knockout.StopBinding\Knockout.StopBinding.ts" />
+    <TypeScriptCompile Include="src\libraries\custom\LiveTiles\LiveTiles.ts" />
     <TypeScriptCompile Include="src\libraries\custom\Tasks\TimerTask.ts" />
     <TypeScriptCompile Include="src\libraries\custom\Utilities\Utilities.ts" />
     <TypeScriptCompile Include="src\pages\default.ts" />

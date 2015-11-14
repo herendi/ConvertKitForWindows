@@ -1,80 +1,90 @@
 ﻿module App
 {
-    export class Strings
+    export module Strings
     {
         /**
-        A static string used as the app's background task name.
+        A export function string used as the app's background task name.
         */
-        static TaskName = "backgroundSourceCheckTask";
+        export var TaskName = "backgroundSourceCheckTask";
 
         /**
-        A static string used as the storage key to save and retrieve the user's Secret Key.
+        A export function string used as the storage key to save and retrieve the user's Secret Key.
         */
-        static SecretStorageKey = "CK-Secret-Key";
+        export var SecretStorageKey = "CK-Secret-Key";
 
         /**
-        A static string used as the storage key to retrieve the app's notification settings.
+        A export function string used as the storage key to retrieve the app's notification settings.
         */
-        static NotificationSettingsKey = "CK-Notification-Settings";
+        export var NotificationSettingsKey = "CK-Notification-Settings";
     }
 
-    export class Utils
+    export module Utils
     {
         //#region Storage 
 
-        static RoamingStorage = {
-            Save: (key: string, value: any) =>
+        export module RoamingStorage 
+        {
+            export function Save(key: string, value: any)
             {
                 Windows.Storage.ApplicationData.current.roamingSettings.values[key] = value;
 
                 //Signal a data change
                 Windows.Storage.ApplicationData.current.signalDataChanged();
-            },
-            Retrieve: (key: string) =>
+            };
+
+            export function Retrieve(key: string)
             {
                 return Windows.Storage.ApplicationData.current.roamingSettings.values[key];
-            },
-            Delete: (key: string) =>
+            };
+
+            export function Delete(key: string)
             {
                 Windows.Storage.ApplicationData.current.roamingSettings.values.remove(key);
-            },
+            };
         };
 
-        static LocalStorage = {
-            Save: (key: string, value: any) =>
+        export module LocalStorage 
+        {
+            export function Save(key: string, value: any)
             {
                 Windows.Storage.ApplicationData.current.localSettings.values[key] = value;
 
                 //Signal a data change
                 Windows.Storage.ApplicationData.current.signalDataChanged();
-            },
-            Retrieve: (key: string) =>
+            };
+
+            export function Retrieve(key: string)
             {
                 return Windows.Storage.ApplicationData.current.localSettings.values[key];
-            },
-            Delete: (key: string) =>
+            };
+
+            export function Delete(key: string)
             {
                 Windows.Storage.ApplicationData.current.localSettings.values.remove(key);
-            },
-            SubscribeToChanges: (handler: (args: any) => void) =>
+            };
+
+            export function SubscribeToChanges(handler: (args: any) => void)
             {
                 Windows.Storage.ApplicationData.current.ondatachanged = handler;
-            }
+            };
         };
 
-        static SessionStorage = {
-            Save: (key: string, value: any) =>
+        export module SessionStorage
+        {
+            export function Save(key: string, value: any)
             {
                 sessionStorage.setItem(key, value);
-            },
-            Retrieve: (key: string) =>
+            };
+
+            export function Retrieve(key: string)
             {
                 return sessionStorage.getItem(key);
-            },
-            Delete: (key: string) =>
+            };
+
+            export function Delete(key: string)
             {
                 sessionStorage.removeItem(key);
-            }
+            };
         };
 
         //#endregion
@@ -82,7 +92,7 @@
         /**
         Shows a dialog with the given title and message, and optionally accepts an array of command buttons.
         */
-        static ShowDialog = (title: string, message: string, commands?: Windows.UI.Popups.IUICommand[]) =>
+        export function ShowDialog(title: string, message: string, commands?: Windows.UI.Popups.IUICommand[])
         {
             var dialog = new Windows.UI.Popups.MessageDialog(message, title);
 
@@ -97,7 +107,7 @@
         /**
         Retrieves a resource string from the given resource file.
         */
-        static GetResourceValue = (key: string, resourceFile: string = "AppSettings.private") =>
+        export function GetResourceValue(key: string, resourceFile: string = "AppSettings.private")
         {
             var resource: { getString: (key: string) => string } = (<any>Windows.ApplicationModel.Resources.ResourceLoader).getForViewIndependentUse(resourceFile);
 
@@ -107,7 +117,7 @@
         /**
         Checks if the device has an internet connection. This can take several seconds to return, but executes synchronously.
         */
-        static HasInternetConnection = () =>
+        export function HasInternetConnection()
         {
             var connection = Windows.Networking.Connectivity.NetworkInformation.getInternetConnectionProfile();
             var level = Windows.Networking.Connectivity.NetworkConnectivityLevel;

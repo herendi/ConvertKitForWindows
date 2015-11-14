@@ -44,6 +44,10 @@
         private HandleLoadSuccess = (response: ConvertKit.Entities.SubscriberList) =>
         {
             this.SubscriberList(response);
+
+            //Update live tiles on each refresh
+            Utils.LiveTiles.UpdateAllTiles(response);
+
             this.IsLoading(false);
         };
 

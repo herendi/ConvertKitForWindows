@@ -9,6 +9,8 @@
             this.IsLoading = ko.observable(false);
             this.HandleLoadSuccess = function (response) {
                 _this.SubscriberList(response);
+                //Update live tiles on each refresh
+                App.Utils.LiveTiles.UpdateAllTiles(response);
                 _this.IsLoading(false);
             };
             this.HandleLoadFailure = function (error) {

@@ -9,25 +9,27 @@
     <section role="main" class="home page-section with-title ms-grid">
         <progress class="loading" style="display:none;" data-bind="visible: IsLoading() === true"></progress>
         <h4 class="win-type-title title">
-            Latest 250 Subscribers
-            <span class="pull-right" data-bind="text: (SubscriberList().total_subscribers || 0) + ' Total Subscribers'"></span>
+            <span class="hide show-inline-m">
+                Latest 250 Subscribers
+            </span>
+            <span class="pull-right pull-none-s" data-bind="text: (SubscriberList().total_subscribers || 0) + ' Total Subscribers'"></span>
         </h4>
         <section class="subscribers" id="subscriber-container" style="display:none;" data-bind="visible: IsLoading() === false">
             <!-- ko foreach: SubscriberList().subscribers -->
             <div class="subscriber ms-row vc">
-                <div class="col-1-6 nb">
+                <div class="xs-col-1-6 nb">
                     <img class="img-circle img-bordered centered"
                          style="max-width:90%; opacity:.9;"
                          data-bind="attr: { src: 'https://www.gravatar.com/avatar/' + $parent.GravatarHash(email_address) + '?s=100' }" />
                 </div>
-                <div class="col-1-2 nb">
+                <div class="xs-col-20-24 m-col-12-24 nb">
                     <p class="win-type-body name" data-bind="text: first_name"></p>
-                    <p class="win-type-body email" data-bind="text: App.Main.Debug ? 'concealed-for-demo@example.com' : email_address"></p>
+                    <p class="win-type-body email win-type-ellipsis" data-bind="text: App.Main.Debug ? 'concealed-for-demo@example.com' : email_address"></p>
                 </div>
-                <div class="col-1-6 nb">
+                <div class="m-col-1-6 nb hide show-m">
                     <p class="win-type-body created" data-bind="text: moment(created_at).format('MMMM Do, YYYY')"></p>
                 </div>
-                <div class="col-1-6 nb">
+                <div class="m-col-1-6 nb hide show-m">
                     <p class="win-type-body state" data-bind="text: state"></p>
                 </div>
                 <hr />

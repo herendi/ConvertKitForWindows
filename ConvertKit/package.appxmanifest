@@ -16,8 +16,9 @@
   <Applications>
     <Application Id="App" StartPage="src\pages\default.html">
       <uap:VisualElements DisplayName="ConvertKit for Windows" Description="ConvertKit" BackgroundColor="transparent" Square150x150Logo="src\images\Square150x150Logo.png" Square44x44Logo="src\images\Square44x44Logo.png">
-        <uap:DefaultTile Wide310x150Logo="src\images\Wide310x150Logo.png">
+        <uap:DefaultTile Wide310x150Logo="src\images\Wide310x150Logo.png" ShortName="ConvertKit">
           <uap:ShowNameOnTiles>
+            <uap:ShowOn Tile="square150x150Logo" />
             <uap:ShowOn Tile="wide310x150Logo" />
           </uap:ShowNameOnTiles>
         </uap:DefaultTile>
