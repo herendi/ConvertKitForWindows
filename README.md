@@ -2,7 +2,7 @@
 
 This is a public repository for the (unofficial) [ConvertKit](https://convertkit.com) for Windows app. This app will soon be in the Windows app store.
 
-## WinJS Issue #1408
+## [WinJS Issue #1408](https://github.com/winjs/winjs/issues/1408)
 
 This app is experiencing a crash when trying to show a message dialog directly from a secondary AppBarCommand's "onclick" property. When you expand the AppBar and click on "Sign out", the app will call [`App.HomeController.HandleSignoutEvent`](https://github.com/nozzlegear/ConvertKitForWindows/blob/WinJS-Issue-1408/ConvertKit/src/pages/home/HomeController.ts#L120). As stated, that function tries to show a message dialog, but instead crashes with the following error:
 
