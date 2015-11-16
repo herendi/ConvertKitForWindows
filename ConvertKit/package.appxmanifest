@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Package xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10" xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest" xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10" IgnorableNamespaces="uap mp">
-  <Identity Name="11272Kingbird.ConvertKitforWindows" Version="1.1.3.0" Publisher="CN=47958F3E-04D3-4EFC-B249-2D204C942350" />
+  <Identity Name="11272Kingbird.ConvertKitforWindows" Version="1.1.5.0" Publisher="CN=47958F3E-04D3-4EFC-B249-2D204C942350" />
   <mp:PhoneIdentity PhoneProductId="8d5e151b-e2da-40d0-913f-40c047ec1c2c" PhonePublisherId="00000000-0000-0000-0000-000000000000" />
   <Properties>
     <DisplayName>ConvertKit for Windows</DisplayName>
