@@ -4,7 +4,7 @@ This application is an unofficial port of [ConvertKit](https://convertkit.com) f
 
 ![The app in action.](https://giant.gfycat.com/GreedyComplexDogwoodtwigborer.gif)
 
-![And on Windows Phone!](http://giant.gfycat.com/FaithfulShabbyJackal.gif)
+![On Windows Phone](https://giant.gfycat.com/FaithfulShabbyJackal.gif)
 
 ConvertKit for Windows is open source. You can view the code, make edits, pull requests or just build it for yourself at [https://github.com/nozzlegear/ConvertKitForWindows](https://github.com/nozzlegear/ConvertKitForWindows).
 
