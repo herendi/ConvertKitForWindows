@@ -8,6 +8,8 @@ This application is an unofficial port of [ConvertKit](https://convertkit.com) f
 
 ## Download 
 
+[![Download from the Windows Store](https://cmsresources.windowsphone.com/devcenter/common/resources/images/badgegenerator/English_wstore_black_258x67.png)](https://www.microsoft.com/store/apps/9nblggh69cp9)
+
 ConvertKit for Windows is available on the Windows Store at [https://www.microsoft.com/store/apps/9nblggh69cp9](https://www.microsoft.com/store/apps/9nblggh69cp9).
 
 ## About
