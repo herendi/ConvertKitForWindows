@@ -8,7 +8,9 @@
             this.SubscriberList = ko.observable({});
             this.IsLoading = ko.observable(false);
             this.HandleLoadSuccess = function (response) {
-                _this.SubscriberList(response);
+                if (_.isEqual(_this.SubscriberList(), response) === false) {
+                    _this.SubscriberList(response);
+                }
                 //Update live tiles on each refresh
                 App.Utils.LiveTiles.UpdateAllTiles(response);
                 _this.IsLoading(false);
@@ -43,23 +45,6 @@
             };
             //#endregion
             //#region Page event handlers
-            /**
-            Attaches or reattaches certain event listeners when the controller is constructed or reattached from the WinJS.Navigation.state.
-            */
-            this.Prepare = function () {
-                //Listen for navigations away from this page
-                WinJS.Navigation.onbeforenavigate = _this.HandleNavigateAway;
-            };
-            /**
-            Stores the controller itself in WinJS.Navigation.state when navigating away, which lets us
-            reattach when coming back, rather than recreating the controller.
-            */
-            this.HandleNavigateAway = function (event) {
-                //Persist the current controller
-                App.Main.State.HomeController = _this;
-                //Remove this event listener until the controller is reattached.
-                WinJS.Navigation.onbeforenavigate = null;
-            };
             this.HandleAppBarUpdate = function (context, element) {
                 //AppBars are kind of jerky, taking a bit to show up. Wait 1 second for it to get 
                 //loaded into the dom, then slide it up.
@@ -83,13 +68,6 @@
                     _this.Service.GetAsync().done(_this.HandleLoadSuccess, _this.HandleLoadFailure);
                 }
             };
-            /**
-            Navigates the user to the settingspage.
-            */
-            this.HandleNavigateToSettingsEvent = function (context, event) {
-                WinJS.Navigation.navigate("ms-appx:///src/pages/settings/settings.html");
-            };
-            this.Prepare();
             this.RegisterKnockoutSubscriptions();
             if (state && state.SubscriberList) {
                 this.HandleLoadSuccess(state.SubscriberList);
@@ -110,37 +88,40 @@
         Object.defineProperty(HomeController, "PageId", {
             //#endregion
             /**
-            The page's id.
+            The page's id. Must be identical to the name of the controller so it can be used from App[PageId].Method
             */
             get: function () {
-                return "Home";
+                return "HomeController";
             },
             enumerable: true,
             configurable: true
         });
         ;
+        Object.defineProperty(HomeController, "PageAppxUrl", {
+            /**
+            The page's ms-appx URL.
+            */
+            get: function () {
+                return "ms-appx:///src/pages/home/home.html";
+            },
+            enumerable: true,
+            configurable: true
+        });
         /**
         Defines the controller's WinJS navigation functions.
         */
         HomeController.DefinePage = function () {
-            WinJS.UI.Pages.define("ms-appx:///src/pages/home/home.html", {
+            WinJS.UI.Pages.define(HomeController.PageAppxUrl, {
                 init: function (element, options) {
                 },
                 processed: function (element, options) {
                 },
                 ready: function (element, options) {
-                    var client;
                     //A previous version of the HomeController may still be attached to the WinJS state.
-                    if (App.Main.State.HomeController) {
-                        client = App.Main.State.HomeController;
-                        //Reattach event listeners, chiefly WinJS nav listeners that detach when navigating away.
-                        client.Prepare();
-                    }
-                    else {
-                        client = new HomeController(options);
-                    }
+                    var client = App.Main.State.HomeController || new HomeController(options);
                     //Track the current page
                     App.Main.CurrentPage(HomeController.PageId);
+                    App.Main.State.HomeController = client;
                     //Define the 'client' namespace, which makes this controller available to the JS console debugger.
                     WinJS.Namespace.define("client", client);
                     ko.applyBindings(client, element);
@@ -149,6 +130,26 @@
                     alert("Error loading HomeController.");
                 },
             });
+        };
+        /**
+        A client restored from JSON does not contain observables or functions. Use this
+        function to merge and restore a previous controller state. This method requires that
+        creating the new controller sets up ALL knockout observables. They cannot be null after
+        constructing.
+        */
+        HomeController.MergeAndRestore = function (lastState) {
+            var client = new HomeController();
+            //Assign values from previous state.
+            _.forOwn(lastState, function (value, key) {
+                var clientValue = client[key];
+                if (ko.isObservable(clientValue)) {
+                    clientValue(value);
+                    return;
+                }
+                ;
+                client[key] = value;
+            });
+            return client;
         };
         return HomeController;
     })();

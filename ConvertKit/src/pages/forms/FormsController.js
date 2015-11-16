@@ -24,23 +24,6 @@
             //#endregion
             //#region Page event handlers
             /**
-            Attaches or reattaches certain event listeners when the controller is constructed or reattached from the WinJS.Navigation.state.
-            */
-            this.Prepare = function () {
-                //Listen for navigations away from this page
-                WinJS.Navigation.onbeforenavigate = _this.HandleNavigateAway;
-            };
-            /**
-            Stores the controller itself in WinJS.Navigation.state when navigating away, which lets us
-            reattach when coming back, rather than recreating the controller.
-            */
-            this.HandleNavigateAway = function (event) {
-                //Persist the current controller
-                App.Main.State.FormsController = _this;
-                //Remove this event listener until the controller is reattached.
-                WinJS.Navigation.onbeforenavigate = null;
-            };
-            /**
             Handles refreshing the list of forms.
             */
             this.HandleRefreshEvent = function (context, event) {
@@ -54,7 +37,6 @@
                     _this.Service.GetAsync().done(_this.HandleLoadSuccess, _this.HandleLoadFailure);
                 }
             };
-            this.Prepare();
             this.RegisterKnockoutSubscriptions();
             if (state && state.FormsResponse) {
                 this.HandleLoadSuccess(state.FormsResponse);
@@ -75,10 +57,21 @@
         Object.defineProperty(FormsController, "PageId", {
             //#endregion
             /**
-            The page's id.
+            The page's id. Must be identical to the name of the controller so it can be used from App[PageId].Method
             */
             get: function () {
-                return "Forms";
+                return "FormsController";
+            },
+            enumerable: true,
+            configurable: true
+        });
+        ;
+        Object.defineProperty(FormsController, "PageAppxUrl", {
+            /**
+            The page's ms-appx URL.
+            */
+            get: function () {
+                return "ms-appx:///src/pages/forms/forms.html";
             },
             enumerable: true,
             configurable: true
@@ -88,24 +81,17 @@
         Defines the controller's WinJS navigation functions.
         */
         FormsController.DefinePage = function () {
-            WinJS.UI.Pages.define("ms-appx:///src/pages/forms/forms.html", {
+            WinJS.UI.Pages.define(FormsController.PageAppxUrl, {
                 init: function (element, options) {
                 },
                 processed: function (element, options) {
                 },
                 ready: function (element, options) {
-                    var client;
                     //A previous version of the FormsController may still be attached to the WinJS state.
-                    if (App.Main.State.FormsController) {
-                        client = App.Main.State.FormsController;
-                        //Reattach event listeners, chiefly WinJS nav listeners that detach when navigating away.
-                        client.Prepare();
-                    }
-                    else {
-                        client = new FormsController(options);
-                    }
+                    var client = App.Main.State.FormsController || new FormsController(options);
                     //Track the current page
                     App.Main.CurrentPage(FormsController.PageId);
+                    App.Main.State.FormsController = client;
                     //Define the 'client' namespace, which makes this controller available to the JS console debugger.
                     WinJS.Namespace.define("client", client);
                     ko.applyBindings(client, element);
@@ -114,6 +100,26 @@
                     alert("Error loading FormsController.");
                 },
             });
+        };
+        /**
+        A client restored from JSON does not contain observables or functions. Use this
+        function to merge and restore a previous controller state. This method requires that
+        creating the new controller sets up ALL knockout observables. They cannot be null after
+        constructing.
+        */
+        FormsController.MergeAndRestore = function (lastState) {
+            var client = new FormsController();
+            //Assign values from previous state.
+            _.forOwn(lastState, function (value, key) {
+                var clientValue = client[key];
+                if (ko.isObservable(clientValue)) {
+                    clientValue(value);
+                    return;
+                }
+                ;
+                client[key] = value;
+            });
+            return client;
         };
         return FormsController;
     })();

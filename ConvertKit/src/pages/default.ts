@@ -197,15 +197,24 @@ module App
         } = {};
 
         /**
+Tracks the name of the current page controller.
+*/
+        static CurrentPage = ko.observable<string>();
+
+        /**
         Starts the application
         */
         static Start = () =>
         {
             var app = WinJS.Application;
             var activation = Windows.ApplicationModel.Activation;
+            var state = activation.ApplicationExecutionState;
 
             app.onactivated = function (args)
             {
+                //Get the last execution state
+                var execState: Windows.ApplicationModel.Activation.ApplicationExecutionState = args.detail.previousExecutionState;
+
                 var view = Windows.UI.ViewManagement.ApplicationView.getForCurrentView();
                 var titleBar = view.titleBar;
 
@@ -221,53 +230,79 @@ module App
                 titleBar.buttonInactiveForegroundColor = Windows.UI.Colors.white;
 
                 //Define pages
-                App.HomeController.DefinePage();
-                App.FormsController.DefinePage();
-                App.LoginController.DefinePage();
-                App.SettingsController.DefinePage();
+                _.forOwn(App, (value, key) =>
+                {
+                    if (_.has(value, "DefinePage"))
+                    {
+                        value.DefinePage();
+                    }
+                });
+                //App.HomeController.DefinePage();
+                //App.FormsController.DefinePage();
+                //App.LoginController.DefinePage();
+                //App.SettingsController.DefinePage();
 
                 if (args.detail.kind === activation.ActivationKind.launch)
                 {
-                    if (args.detail.previousExecutionState !== activation.ApplicationExecutionState.terminated)
-                    {
-                        // This application has been newly launched. Initialize your application here.
+                    //Begin processing UI.
+                    var appPromise = WinJS.UI
+                        .processAll()
+                        .then(() => Main.CreateTimerTask(Main.NotificationSettings.ToUnobservable()));
+                    
+                    //Check the last execution state. Initialize the app if it was not running or closed by user. Else restore state. 
+                    if (execState !== state.notRunning && execState !== state.closedByUser && execState !== state.terminated)
+                    { 
+                        // Application was previously running. Do not reapply KO bindings or an exception will be thrown. 
                     }
                     else
                     {
-                        // This application was suspended and then terminated.
-                        // To create a smooth user experience, restore application state here so that it looks like the app never stopped running.
-                    }
+                        //Apply page-level bindings to app. Will not trump view-specific bindings thanks to the custom stopBinding binding.
+                        ko.applyBindings(this);
 
-                    var timerTaskFail = (error) =>
-                    {
-                        Utils.ShowDialog("Background access denied.", error);
+                        if (execState === activation.ApplicationExecutionState.terminated && WinJS.Application.sessionState.Main)
+                        {
+                            //Restore application state
+                            Main.State = JSON.parse(WinJS.Application.sessionState.Main.StateJSON);
+                            Main.CurrentPage(WinJS.Application.sessionState.Main.LastPage);
+
+                            _.forOwn(Main.State, (value, key) =>
+                            {
+                                try
+                                {
+                                    if (_.has(App[key], "MergeAndRestore"))
+                                    {
+                                        Main.State[key] = new App[key].MergeAndRestore(value);
+                                    };
+                                }
+                                catch (e)
+                                {
+                                    //Delete the value from state. If app fails to recreate state, it can recover by creating a new controller from scratch.
+                                    Main.State[key] = null;
+                                }
+                            });
+                        }
+                        else
+                        {
+                            //Initialize the application
+                        }
+
+                        //Navigate to the home page
+                        appPromise = appPromise
+                            .then(() =>
+                            {
+                                //Check if the user has entered their API key
+                                if (Utils.LocalStorage.Retrieve(App.Strings.SecretStorageKey) || Main.Debug)
+                                {
+                                    //Navigate to the last known page if available, else go to home.
+                                    return WinJS.Navigation.navigate(Main.CurrentPage() ? App[Main.CurrentPage()].PageAppxUrl : HomeController.PageAppxUrl, WinJS.Navigation.state);
+                                }
+                                
+                                //Navigate to the login controller.
+                                return WinJS.Navigation.navigate(LoginController.PageAppxUrl, WinJS.Navigation.state);
+                            }, (error) => Utils.ShowDialog("Background access denied.", error));
                     };
 
-                    //Process UI and navigate to the proper page.
-                    var appFinalizationPromise = WinJS.UI.processAll()
-                        .then(() => Main.CreateTimerTask(Main.NotificationSettings.ToUnobservable()))
-                        .then(() =>
-                        {
-                            return new WinJS.Promise((res, rej) =>
-                            {
-                                //Apply page-level bindings to app. Will not trump view-specific bindings thanks to the custom stopBinding binding.
-                                ko.applyBindings(this);
-
-                                res();
-                            });
-                        })
-                        .then(() =>
-                        {
-                            //Check if the user has entered their API key
-                            if (Utils.LocalStorage.Retrieve(App.Strings.SecretStorageKey) || Main.Debug)
-                            {
-                                return WinJS.Navigation.navigate(WinJS.Navigation.location || "ms-appx:///src/pages/home/home.html", WinJS.Navigation.state);
-                            }
-
-                            return WinJS.Navigation.navigate("ms-appx:///src/pages/login/login.html", WinJS.Navigation.state);
-                        });
-
-                    (<any>args).setPromise(appFinalizationPromise);
+                    (<any>args).setPromise(appPromise);
                 };
             };
 
@@ -276,52 +311,62 @@ module App
                 // TODO: This application is about to be suspended. Save any state that needs to persist across suspensions here.
                 // You might use the WinJS.Application.sessionState object, which is automatically saved and restored across suspension.
                 // If you need to complete an asynchronous operation before your application is suspended, call args.setPromise().
+
+                //Preserve applictaion state to restore later.
+                WinJS.Application.sessionState.Main = {
+                    StateJSON: ko.toJSON(Main.State),
+                    LastPage: Main.CurrentPage()
+                };
             };
 
             app.start();
         };
 
-        static CurrentPage = ko.observable<string>();
-
+        /**
+        Handles navigating to the subscriber page.
+        */
         static HandleNavigateToSubscribers = (context, event) =>
         {
             if (Main.CurrentPage() !== App.HomeController.PageId)
             {
-                WinJS.Navigation.navigate("ms-appx:///src/pages/home/home.html");
+                WinJS.Navigation.navigate(HomeController.PageAppxUrl);
             };
         };
 
+        /**
+        Handles navigating to the forms page.
+        */
         static HandleNavigateToForms = (context, event) =>
         {
             if (Main.CurrentPage() !== App.FormsController.PageId)
             {
-                WinJS.Navigation.navigate("ms-appx:///src/pages/forms/forms.html");
+                WinJS.Navigation.navigate(FormsController.PageAppxUrl);
             };
         };
 
         /**
-        Attempts to refresh the current page by calling client.HandleRefreshEvent. It's up to the page controller 
-        to make itself available via WinJS.Namespace.define("client", ...);.
-        */
-        static HandleRefreshEvent = (context, event) =>
-        {
-            var client = window["client"];
-
-            if (client && client.HandleRefreshEvent)
-            {
-                client.HandleRefreshEvent(context, event);
-            }
-        };
-
-        /**
-        Navigates the user to the settings page.
+        Handles navigating to the settings page.
         */
         static HandleNavigateToSettings = (context, event) =>
         {
             if (Main.CurrentPage() !== App.SettingsController.PageId)
             {
-                WinJS.Navigation.navigate("ms-appx:///src/pages/settings/settings.html");
+                WinJS.Navigation.navigate(SettingsController.PageAppxUrl);
             };
+        };
+
+        /**
+        Attempts to refresh the current page by calling client.HandleRefreshEvent.
+        */
+        static HandleRefreshEvent = (context, event) =>
+        {
+            var funcName = "HandleRefreshEvent";
+            var ctrl = Main.CurrentPage();
+
+            if (_.has(App.Main.State, ctrl) && _.has(App.Main.State[ctrl], funcName))
+            {
+                App.Main.State[ctrl][funcName](context, event);
+            }
         };
     }
 }

@@ -6,8 +6,6 @@ module App
     {
         constructor()
         {
-            this.Prepare();
-
             //Grab the app settings and populate the notifications values
             this.Notifications.Enabled(Main.NotificationSettings.Enabled());
             this.Notifications.Timer(Main.NotificationSettings.Timer());
@@ -86,31 +84,37 @@ module App
             dialog.showAsync();
         };
 
+        /**
+        A client restored from JSON does not contain observables or functions. Use this 
+        function to merge and restore a previous controller state. This method requires that 
+        creating the new controller sets up ALL knockout observables. They cannot be null after
+        constructing.
+        */
+        static MergeAndRestore = (lastState) =>
+        {
+            var client = new SettingsController();
+ 
+            //Assign values from previous state.
+            _.forOwn(lastState, (value, key) =>
+            {
+                var clientValue = client[key];
+
+                if (ko.isObservable(clientValue))
+                {
+                    clientValue(value);
+
+                    return;
+                };
+
+                client[key] = value;
+            });
+
+            return client;
+        };
+
         //#endregion
 
         //#region Page event handlers
-
-        /**
-        Attaches or reattaches certain event listeners when the controller is constructed or reattached from the WinJS.Navigation.state.
-        */
-        public Prepare = () =>
-        {   
-            //Listen for navigations away from this page
-            WinJS.Navigation.onbeforenavigate = this.HandleNavigateAway;
-        };
-
-        /**
-        Stores the controller itself in WinJS.Navigation.state when navigating away, which lets us 
-        reattach when coming back, rather than recreating the controller.
-        */
-        public HandleNavigateAway = (event) =>
-        {
-            //Persist the current controller
-            App.Main.State.SettingsController = this;
-
-            //Remove this event listener until the controller is reattached.
-            WinJS.Navigation.onbeforenavigate = null;
-        };
 
         /**
         Handles signing out, which deletes the user's ConvertKit secret key from storage.
@@ -146,11 +150,19 @@ module App
         //#endregion
 
         /**
-        The page's id.
+        The page's id. Must be identical to the name of the controller so it can be used from App[PageId].Method
         */
         static get PageId()
         {
-            return "Settings";
+            return "SettingsController";
+        };
+
+        /**
+        The page's ms-appx URL.
+        */
+        static get PageAppxUrl()
+        {
+            return "ms-appx:///src/pages/settings/settings.html";
         };
 
         /**
@@ -158,7 +170,7 @@ module App
         */
         static DefinePage()
         {
-            WinJS.UI.Pages.define("ms-appx:///src/pages/settings/settings.html", {
+            WinJS.UI.Pages.define(SettingsController.PageAppxUrl, {
                 init: (element, options) =>
                 {
 
@@ -169,23 +181,12 @@ module App
                 },
                 ready: (element, options) =>
                 {
-                    var client = new SettingsController();
-
                     //A previous version of the SettingsController may still be attached to the WinJS state.
-                    if (App.Main.State.SettingsController)
-                    {
-                        client = App.Main.State.SettingsController
-
-                        //Reattach event listeners, chiefly WinJS nav listeners that detach when navigating away.
-                        client.Prepare();
-                    }
-                    else
-                    {
-                        client = new SettingsController()
-                    }
+                    var client = App.Main.State.SettingsController || new SettingsController();
 
                     //Track the current page
                     App.Main.CurrentPage(SettingsController.PageId);
+                    App.Main.State.SettingsController = client;
 
                     //Define the 'client' namespace, which makes this controller available to the JS console debugger.
                     WinJS.Namespace.define("client", client);

@@ -35,6 +35,34 @@ module App
             dialog.showAsync();
         };
 
+        /**
+        A client restored from JSON does not contain observables or functions. Use this 
+        function to merge and restore a previous controller state. This method requires that 
+        creating the new controller sets up ALL knockout observables. They cannot be null after
+        constructing.
+        */
+        static MergeAndRestore = (lastState) =>
+        {
+            var client = new LoginController();
+ 
+            //Assign values from previous state.
+            _.forOwn(lastState, (value, key) =>
+            {
+                var clientValue = client[key];
+
+                if (ko.isObservable(clientValue))
+                {
+                    clientValue(value);
+
+                    return;
+                };
+
+                client[key] = value;
+            });
+
+            return client;
+        };
+
         //#endregion
 
         //#region Page event handlers
@@ -93,19 +121,27 @@ module App
         //#endregion
 
         /**
-        The page's id.
+        The page's id. Must be identical to the name of the controller so it can be used from App[PageId].Method
         */
         static get PageId()
         {
-            return "Login";
+            return "LoginController";
         };
+
+        /**
+        The page's ms-appx URL.
+        */
+        static get PageAppxUrl()
+        {
+            return "ms-appx:///src/pages/login/login.html";
+        }
 
         /**
         Defines the controller's WinJS navigation functions.
         */
         static DefinePage()
         {
-            WinJS.UI.Pages.define("ms-appx:///src/pages/login/login.html", {
+            WinJS.UI.Pages.define(LoginController.PageAppxUrl, {
                 init: (element, options) =>
                 {
 
@@ -116,10 +152,11 @@ module App
                 },
                 ready: (element, options) =>
                 {
-                    var client = new LoginController();
+                    var client = App.Main.State.LoginController || new LoginController();
 
                     //Track the current page
                     App.Main.CurrentPage(LoginController.PageId);
+                    App.Main.State.LoginController = client;
 
                     //Define the 'client' namespace, which makes this controller available to the JS console debugger.
                     WinJS.Namespace.define("client", client);

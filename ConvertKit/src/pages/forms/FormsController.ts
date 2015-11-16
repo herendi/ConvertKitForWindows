@@ -4,7 +4,6 @@
     {
         constructor(state?: { FormsResponse: ConvertKit.Entities.FormResponse })
         {
-            this.Prepare();
             this.RegisterKnockoutSubscriptions();
 
             if (state && state.FormsResponse)
@@ -63,31 +62,37 @@
             Utils.ShowDialog("Error", "Failed to retrieve list of subscribers.");
         };
 
+        /**
+        A client restored from JSON does not contain observables or functions. Use this 
+        function to merge and restore a previous controller state. This method requires that 
+        creating the new controller sets up ALL knockout observables. They cannot be null after
+        constructing.
+        */
+        static MergeAndRestore = (lastState) =>
+        {
+            var client = new FormsController();
+ 
+            //Assign values from previous state.
+            _.forOwn(lastState, (value, key) =>
+            {
+                var clientValue = client[key];
+
+                if (ko.isObservable(clientValue))
+                {
+                    clientValue(value);
+
+                    return;
+                };
+
+                client[key] = value;
+            });
+
+            return client;
+        };
+
         //#endregion
 
         //#region Page event handlers
-
-        /**
-        Attaches or reattaches certain event listeners when the controller is constructed or reattached from the WinJS.Navigation.state.
-        */
-        public Prepare = () =>
-        {   
-            //Listen for navigations away from this page
-            WinJS.Navigation.onbeforenavigate = this.HandleNavigateAway;
-        };
-
-        /**
-        Stores the controller itself in WinJS.Navigation.state when navigating away, which lets us 
-        reattach when coming back, rather than recreating the controller.
-        */
-        public HandleNavigateAway = (event) =>
-        {
-            //Persist the current controller
-            App.Main.State.FormsController = this;
-
-            //Remove this event listener until the controller is reattached.
-            WinJS.Navigation.onbeforenavigate = null;
-        };
 
         /**
         Handles refreshing the list of forms.
@@ -114,11 +119,19 @@
         //#endregion
 
         /**
-        The page's id.
+        The page's id. Must be identical to the name of the controller so it can be used from App[PageId].Method
         */
         static get PageId()
         {
-            return "Forms";
+            return "FormsController";
+        };
+
+        /**
+        The page's ms-appx URL.
+        */
+        static get PageAppxUrl()
+        {
+            return "ms-appx:///src/pages/forms/forms.html";
         };
 
         /**
@@ -126,7 +139,7 @@
         */
         static DefinePage()
         {
-            WinJS.UI.Pages.define("ms-appx:///src/pages/forms/forms.html", {
+            WinJS.UI.Pages.define(FormsController.PageAppxUrl, {
                 init: (element, options) =>
                 {
 
@@ -137,23 +150,12 @@
                 },
                 ready: (element, options) =>
                 {
-                    var client: FormsController;
-
                     //A previous version of the FormsController may still be attached to the WinJS state.
-                    if (App.Main.State.FormsController)
-                    {
-                        client = App.Main.State.FormsController;
-
-                        //Reattach event listeners, chiefly WinJS nav listeners that detach when navigating away.
-                        client.Prepare();
-                    }
-                    else
-                    {
-                        client = new FormsController(options)
-                    }
+                    var client = App.Main.State.FormsController || new FormsController(options);
 
                     //Track the current page
                     App.Main.CurrentPage(FormsController.PageId);
+                    App.Main.State.FormsController = client;
                     
                     //Define the 'client' namespace, which makes this controller available to the JS console debugger.
                     WinJS.Namespace.define("client", client);

@@ -3,7 +3,6 @@ var App;
 (function (App) {
     var SettingsController = (function () {
         function SettingsController() {
-            var _this = this;
             this.IsLoading = ko.observable(false);
             this.Notifications = {
                 Enabled: ko.observable(true),
@@ -15,23 +14,6 @@ var App;
             };
             //#endregion
             //#region Page event handlers
-            /**
-            Attaches or reattaches certain event listeners when the controller is constructed or reattached from the WinJS.Navigation.state.
-            */
-            this.Prepare = function () {
-                //Listen for navigations away from this page
-                WinJS.Navigation.onbeforenavigate = _this.HandleNavigateAway;
-            };
-            /**
-            Stores the controller itself in WinJS.Navigation.state when navigating away, which lets us
-            reattach when coming back, rather than recreating the controller.
-            */
-            this.HandleNavigateAway = function (event) {
-                //Persist the current controller
-                App.Main.State.SettingsController = _this;
-                //Remove this event listener until the controller is reattached.
-                WinJS.Navigation.onbeforenavigate = null;
-            };
             /**
             Handles signing out, which deletes the user's ConvertKit secret key from storage.
             */
@@ -52,7 +34,6 @@ var App;
                 var cancelCommand = new Windows.UI.Popups.UICommand("Cancel");
                 App.Utils.ShowDialog("Are you sure you want to sign out?", "Signing out will erase your secret key from this app's storage. You'll need to enter it again to use ConvertKit for Windows.", [confirmCommand, cancelCommand]);
             };
-            this.Prepare();
             //Grab the app settings and populate the notifications values
             this.Notifications.Enabled(App.Main.NotificationSettings.Enabled());
             this.Notifications.Timer(App.Main.NotificationSettings.Timer());
@@ -95,10 +76,21 @@ var App;
         Object.defineProperty(SettingsController, "PageId", {
             //#endregion
             /**
-            The page's id.
+            The page's id. Must be identical to the name of the controller so it can be used from App[PageId].Method
             */
             get: function () {
-                return "Settings";
+                return "SettingsController";
+            },
+            enumerable: true,
+            configurable: true
+        });
+        ;
+        Object.defineProperty(SettingsController, "PageAppxUrl", {
+            /**
+            The page's ms-appx URL.
+            */
+            get: function () {
+                return "ms-appx:///src/pages/settings/settings.html";
             },
             enumerable: true,
             configurable: true
@@ -108,24 +100,17 @@ var App;
         Defines the controller's WinJS navigation functions.
         */
         SettingsController.DefinePage = function () {
-            WinJS.UI.Pages.define("ms-appx:///src/pages/settings/settings.html", {
+            WinJS.UI.Pages.define(SettingsController.PageAppxUrl, {
                 init: function (element, options) {
                 },
                 processed: function (element, options) {
                 },
                 ready: function (element, options) {
-                    var client = new SettingsController();
                     //A previous version of the SettingsController may still be attached to the WinJS state.
-                    if (App.Main.State.SettingsController) {
-                        client = App.Main.State.SettingsController;
-                        //Reattach event listeners, chiefly WinJS nav listeners that detach when navigating away.
-                        client.Prepare();
-                    }
-                    else {
-                        client = new SettingsController();
-                    }
+                    var client = App.Main.State.SettingsController || new SettingsController();
                     //Track the current page
                     App.Main.CurrentPage(SettingsController.PageId);
+                    App.Main.State.SettingsController = client;
                     //Define the 'client' namespace, which makes this controller available to the JS console debugger.
                     WinJS.Namespace.define("client", client);
                     ko.applyBindings(client, element);
@@ -134,6 +119,26 @@ var App;
                     alert("Error loading SettingsController.");
                 }
             });
+        };
+        /**
+        A client restored from JSON does not contain observables or functions. Use this
+        function to merge and restore a previous controller state. This method requires that
+        creating the new controller sets up ALL knockout observables. They cannot be null after
+        constructing.
+        */
+        SettingsController.MergeAndRestore = function (lastState) {
+            var client = new SettingsController();
+            //Assign values from previous state.
+            _.forOwn(lastState, function (value, key) {
+                var clientValue = client[key];
+                if (ko.isObservable(clientValue)) {
+                    clientValue(value);
+                    return;
+                }
+                ;
+                client[key] = value;
+            });
+            return client;
         };
         return SettingsController;
     })();

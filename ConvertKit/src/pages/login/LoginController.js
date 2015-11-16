@@ -52,28 +52,39 @@ var App;
         Object.defineProperty(LoginController, "PageId", {
             //#endregion
             /**
-            The page's id.
+            The page's id. Must be identical to the name of the controller so it can be used from App[PageId].Method
             */
             get: function () {
-                return "Login";
+                return "LoginController";
             },
             enumerable: true,
             configurable: true
         });
         ;
+        Object.defineProperty(LoginController, "PageAppxUrl", {
+            /**
+            The page's ms-appx URL.
+            */
+            get: function () {
+                return "ms-appx:///src/pages/login/login.html";
+            },
+            enumerable: true,
+            configurable: true
+        });
         /**
         Defines the controller's WinJS navigation functions.
         */
         LoginController.DefinePage = function () {
-            WinJS.UI.Pages.define("ms-appx:///src/pages/login/login.html", {
+            WinJS.UI.Pages.define(LoginController.PageAppxUrl, {
                 init: function (element, options) {
                 },
                 processed: function (element, options) {
                 },
                 ready: function (element, options) {
-                    var client = new LoginController();
+                    var client = App.Main.State.LoginController || new LoginController();
                     //Track the current page
                     App.Main.CurrentPage(LoginController.PageId);
+                    App.Main.State.LoginController = client;
                     //Define the 'client' namespace, which makes this controller available to the JS console debugger.
                     WinJS.Namespace.define("client", client);
                     ko.applyBindings(client, element);
@@ -82,6 +93,26 @@ var App;
                     alert("Error loading LoginController.");
                 }
             });
+        };
+        /**
+        A client restored from JSON does not contain observables or functions. Use this
+        function to merge and restore a previous controller state. This method requires that
+        creating the new controller sets up ALL knockout observables. They cannot be null after
+        constructing.
+        */
+        LoginController.MergeAndRestore = function (lastState) {
+            var client = new LoginController();
+            //Assign values from previous state.
+            _.forOwn(lastState, function (value, key) {
+                var clientValue = client[key];
+                if (ko.isObservable(clientValue)) {
+                    clientValue(value);
+                    return;
+                }
+                ;
+                client[key] = value;
+            });
+            return client;
         };
         return LoginController;
     })();

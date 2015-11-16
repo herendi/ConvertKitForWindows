@@ -19,7 +19,8 @@ module App
                 "ms-appx:///src/libraries/yeahtoast/yeahtoast.js",
                 "ms-appx:///src/libraries/lodash/lodash.min.js",
                 "ms-appx:///src/libraries/custom/convertkit/convertkit.js",
-                "ms-appx:///src/libraries/custom/Utilities/Utilities.js"
+                "ms-appx:///src/libraries/custom/Utilities/Utilities.js",
+                "ms-appx:///src/libraries/custom/LiveTiles/LiveTiles.js"
             ];
 
             for (var i = 0; i < scripts.length; i++)
