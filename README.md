@@ -4,7 +4,7 @@ This application is an unofficial port of [ConvertKit](https://convertkit.com) f
 
 ![The app in action.](https://giant.gfycat.com/GreedyComplexDogwoodtwigborer.gif)
 
-**Watch the same app in action on Windows Phone**: [https://gfycat.com/FaithfulShabbyJackal](https://giant.gfycat.com/FaithfulShabbyJackal). It's running the exact same code as the Windows app, and the design adjusts responsively with CSS.
+**Watch the same app in action on Windows Phone**: [https://gfycat.com/FaithfulShabbyJackal](https://gfycat.com/FaithfulShabbyJackal). It's running the exact same code as the Windows app, and the design adjusts responsively with CSS.
 
 ## Download 
 
